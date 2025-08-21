@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package vulpescloud.node.v1;
+
+option java_package = "de.vulpescloud.proto.node.v1";
+option java_multiple_files = true;
+
+message ServerSoftware {
+	string name = 1;
+	string version = 2;
+	string url = 3;
+	string plugin_dir = 4;
+	SoftwareType type = 5;
+}
+
+enum SoftwareType {
+	SOFTWARE_TYPE_UNSPECIFIED = 0;
+	SOFTWARE_TYPE_SERVER = 1;
+	SOFTWARE_TYPE_PROXY = 2;
+}

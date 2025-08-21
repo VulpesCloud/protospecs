@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package vulpescloud.node.v1;
+
+option java_package = "de.vulpescloud.proto.node.v1";
+option java_multiple_files = true;
+
+import "vulpescloud/node/v1/node_types.proto";
+
+message CreateServiceRequest {
+	TaskDefinition task = 1;
+}
+
+message CreateServiceResponse {
+	ServiceDefinition service = 1;
+}
+
+message StartServiceRequest {
+	ServiceDefinition service = 1;
+}
+
+message StartServiceResponse {
+	ServiceDefinition service = 1;
+}
+
+message RestartServiceRequest {
+	ServiceDefinition service = 1;
+}
+
+message RestartServiceResponse {
+	ServiceDefinition service = 1;
+}
+
+message StopServiceRequest {
+	ServiceDefinition service = 1;
+}
+
+message StopServiceResponse {
+	ServiceDefinition service = 1;
+}
+
+service NodeService {
+	rpc CreateService(CreateServiceRequest) returns (CreateServiceResponse);
+	rpc StartService(StartServiceRequest) returns (StartServiceResponse);
+	rpc RestartService(RestartServiceRequest) returns (RestartServiceResponse);
+	rpc StopService(StopServiceRequest) returns (StopServiceResponse);
+}
