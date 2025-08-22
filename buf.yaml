@@ -1,6 +1,12 @@
 version: v2
+
+modules:
+  - path: .
+    name: buf.build/vulpescloud/protospecs
+
 deps:
   - buf.build/googleapis/googleapis
+
 lint:
   use:
     - STANDARD
@@ -8,9 +14,7 @@ lint:
     - FIELD_NOT_REQUIRED
     - PACKAGE_NO_IMPORT_CYCLE
   disallow_comment_ignores: true
-modules:
-  - path: .
-    name: buf.build/vulpescloud/protospecs
+
 breaking:
   use:
     - FILE

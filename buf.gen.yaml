@@ -1,9 +1,11 @@
 version: v2
 plugins:
-  # Java/Kotlin
   - remote: buf.build/protocolbuffers/java
     out: gen/java
   - remote: buf.build/grpc/java
+    out: gen/java
+
+  - remote: buf.build/grpc/kotlin
     out: gen/java
 
   - remote: buf.build/bufbuild/es:v2.2.3
@@ -12,8 +14,6 @@ plugins:
       - target=ts
       - import_extension=ts
       - json_types=true
-
-  # TypeScript (ts-proto)
   - remote: buf.build/community/stephenh-ts-proto
     out: gen/ts
     opt:
