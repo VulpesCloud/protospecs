@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package vulpescloud.services.v1;
+
+option java_package = "de.vulpescloud.proto.services.v1";
+option java_multiple_files = true;
+
+import "google/protobuf/timestamp.proto";
+import "vulpescloud/tasks/v1/task_types.proto";
+
+message ServiceDefinition {
+    vulpescloud.tasks.v1.TaskDefinition task = 1;
+    string uuid = 2;
+    uint32 ordered_id = 3;
+    uint32 port = 4;
+    string node = 5;
+    ServiceState state = 6;
+    uint32 player_count = 7;
+    google.protobuf.Timestamp start_time = 8;
+}
+
+enum ServiceState {
+    SERVICE_STATE_UNSPECIFIED = 0;
+    SERVICE_STATE_RUNNING = 1;
+    SERVICE_STATE_STARTING = 2;
+    SERVICE_STATE_PREPARED = 3;
+    SERVICE_STATE_STOPPED = 4;
+}
