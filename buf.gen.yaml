@@ -4,9 +4,13 @@ plugins:
     out: gen/java
   - remote: buf.build/grpc/java
     out: gen/java
+    opt:
+      - lite=false
 
   - remote: buf.build/grpc/kotlin
     out: gen/java
+    opt:
+      - lite=false
 
   - remote: buf.build/bufbuild/es:v2.2.3
     out: ../app/proto/gen
@@ -21,3 +25,4 @@ plugins:
       - forceLong=string
       - useOptionals=messages
       - outputServices=grpc-js
+      - lite=false
