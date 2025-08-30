@@ -41,6 +41,14 @@ message StopServiceResponse {
 	vulpescloud.services.v1.ServiceDefinition service = 1;
 }
 
+message DeleteServiceRequest {
+	vulpescloud.services.v1.ServiceDefinition service = 1;
+}
+
+message DeleteServiceResponse {
+	vulpescloud.services.v1.ServiceDefinition service = 1;
+}
+
 message GetAllServicesRequest {
 }
 
@@ -85,6 +93,7 @@ service ServiceAPIService {
 	rpc StartService(StartServiceRequest) returns (StartServiceResponse);
 	rpc RestartService(RestartServiceRequest) returns (RestartServiceResponse);
 	rpc StopService(StopServiceRequest) returns (StopServiceResponse);
+	rpc DeleteService(DeleteServiceRequest) returns (DeleteServiceResponse);
 	rpc GetAllServices(GetAllServicesRequest) returns (GetAllServicesResponse);
 	rpc GetByTask(GetByTaskRequest) returns (GetByTaskResponse);
 	rpc GetByUuid(GetByUuidRequest) returns (GetByUuidResponse);
