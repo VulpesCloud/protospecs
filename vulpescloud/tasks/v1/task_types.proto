@@ -6,6 +6,7 @@ option java_package = "de.vulpescloud.proto.tasks.v1";
 option java_multiple_files = true;
 
 import "vulpescloud/node/v1/server_software.proto";
+import "google/protobuf/struct.proto";
 
 message TaskDefinition {
     string name = 1;
@@ -22,6 +23,9 @@ message TaskDefinition {
     string preferred_node = 12;
     uint32 max_players = 13;
     vulpescloud.node.v1.ServerSoftware server_software = 14;
+    google.protobuf.Struct attributes = 15;
+    repeated string jvm_args = 16;
+    repeated string env_vars = 17;
 }
 
 message TemplateDefinition {
