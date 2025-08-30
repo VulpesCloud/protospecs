@@ -8,9 +8,10 @@ option java_multiple_files = true;
 message ServerSoftware {
 	string name = 1;
 	string version = 2;
-	string url = 3;
-	string plugin_dir = 4;
-	SoftwareType type = 5;
+	uint32 build = 3;
+	string url = 4;
+	string plugin_dir = 5;
+	SoftwareType type = 6;
 }
 
 enum SoftwareType {
