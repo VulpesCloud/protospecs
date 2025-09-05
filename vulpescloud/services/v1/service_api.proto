@@ -88,6 +88,15 @@ message GetBySoftwareTypeResponse {
 	repeated vulpescloud.services.v1.ServiceDefinition services = 1;
 }
 
+message SendCommandRequest {
+	vulpescloud.services.v1.ServiceDefinition service = 1;
+	string command = 2;
+}
+
+message SendCommandResponse {
+	vulpescloud.services.v1.ServiceDefinition service = 1;
+}
+
 service ServiceAPIService {
 	rpc CreateService(CreateServiceRequest) returns (CreateServiceResponse);
 	rpc StartService(StartServiceRequest) returns (StartServiceResponse);
@@ -99,4 +108,5 @@ service ServiceAPIService {
 	rpc GetByUuid(GetByUuidRequest) returns (GetByUuidResponse);
 	rpc GetByName(GetByNameRequest) returns (GetByNameResponse);
 	rpc GetBySoftwareType(GetBySoftwareTypeRequest) returns (GetBySoftwareTypeResponse);
+	rpc SendCommand(SendCommandRequest) returns (SendCommandResponse);
 }
