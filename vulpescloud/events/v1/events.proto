@@ -1,0 +1,32 @@
+syntax = "proto3";
+package vulpescloud.events.v1;
+
+option java_multiple_files = true;
+option java_package = "de.vulpescloud.proto.events.v1";
+
+message Event {
+  string id = 1;
+  string type = 2;
+  map<string, string> metadata = 3;
+  bytes payload = 4;
+  int64 timestamp = 5;
+}
+
+message SubscribeRequest {
+  repeated string event_types = 1;
+  map<string, string> filter = 2;
+}
+
+message PublishRequest {
+  Event event = 1;
+}
+
+message PublishResponse {
+  string id = 1;
+  bool accepted = 2;
+}
+
+service EventService {
+  rpc Subscribe(SubscribeRequest) returns (stream Event);
+  rpc Publish(PublishRequest) returns (PublishResponse);
+}
