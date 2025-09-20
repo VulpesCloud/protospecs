@@ -2,61 +2,67 @@ syntax = "proto3";
 
 package vulpescloud.tasks.v1;
 
-option java_package = "de.vulpescloud.proto.tasks.v1";
-option java_multiple_files = true;
-
 import "vulpescloud/tasks/v1/task_types.proto";
 
+option java_multiple_files = true;
+option java_package = "de.vulpescloud.proto.tasks.v1";
+
 message CreateTaskRequest {
-	vulpescloud.tasks.v1.TaskDefinition task = 1;
+  vulpescloud.tasks.v1.TaskDefinition task = 1;
 }
 
 message CreateTaskResponse {
-	vulpescloud.tasks.v1.TaskDefinition task = 1;
+  vulpescloud.tasks.v1.TaskDefinition task = 1;
 }
 
 message DeleteTaskRequest {
-	vulpescloud.tasks.v1.TaskDefinition task = 1;
+  vulpescloud.tasks.v1.TaskDefinition task = 1;
 }
 
 message DeleteTaskResponse {
-	vulpescloud.tasks.v1.TaskDefinition task = 1;
+  vulpescloud.tasks.v1.TaskDefinition task = 1;
 }
 
-message GetAllTasksRequest {
-}
+message GetAllTasksRequest {}
 
 message GetAllTasksResponse {
-	repeated vulpescloud.tasks.v1.TaskDefinition tasks = 1;
+  repeated vulpescloud.tasks.v1.TaskDefinition tasks = 1;
 }
 
 message GetByNameRequest {
-	string name = 1;
+  string name = 1;
 }
 
-
 message GetByTemplateRequest {
-	vulpescloud.tasks.v1.TaskDefinition template = 1;
+  vulpescloud.tasks.v1.TaskDefinition template = 1;
 }
 
 message GetByTemplateResponse {
-	repeated vulpescloud.tasks.v1.TaskDefinition tasks = 1;
+  repeated vulpescloud.tasks.v1.TaskDefinition tasks = 1;
 }
 
 message GetByNameResponse {
-	vulpescloud.tasks.v1.TaskDefinition task = 1;
+  vulpescloud.tasks.v1.TaskDefinition task = 1;
 }
 
-message GetAllTemplatesRequest {
-}
+message GetAllTemplatesRequest {}
 
 message GetAllTemplatesResponse {
-	repeated vulpescloud.tasks.v1.TaskDefinition templates = 1;
+  repeated vulpescloud.tasks.v1.TaskDefinition templates = 1;
+}
+
+message UpdateTaskRequest {
+  vulpescloud.tasks.v1.TaskDefinition task = 1;
+}
+
+message UpdateTaskResponse {
+  vulpescloud.tasks.v1.TaskDefinition task = 1;
 }
 
 service TasksAPIService {
-	rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse);
-	rpc DeleteTask(DeleteTaskRequest) returns (DeleteTaskResponse);
-	rpc GetAllTasks(GetAllTasksRequest) returns (GetAllTasksResponse);
-	rpc GetByName(GetByNameRequest) returns (GetByNameResponse);
+  rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse);
+  rpc DeleteTask(DeleteTaskRequest) returns (DeleteTaskResponse);
+  rpc GetAllTasks(GetAllTasksRequest) returns (GetAllTasksResponse);
+  rpc GetByName(GetByNameRequest) returns (GetByNameResponse);
+  rpc UpdateTask(UpdateTaskRequest) returns (UpdateTaskResponse);
 }

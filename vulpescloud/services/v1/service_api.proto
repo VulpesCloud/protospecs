@@ -2,111 +2,119 @@ syntax = "proto3";
 
 package vulpescloud.services.v1;
 
-option java_package = "de.vulpescloud.proto.services.v1";
-option java_multiple_files = true;
-
-import "vulpescloud/tasks/v1/task_types.proto";
-import "vulpescloud/services/v1/service_types.proto";
 import "vulpescloud/node/v1/server_software.proto";
+import "vulpescloud/services/v1/service_types.proto";
+import "vulpescloud/tasks/v1/task_types.proto";
 
-message CreateServiceRequest {
-	vulpescloud.tasks.v1.TaskDefinition task = 1;
+option java_multiple_files = true;
+option java_package = "de.vulpescloud.proto.services.v1";
+
+message PrepareServiceByTaskRequest {
+  vulpescloud.tasks.v1.TaskDefinition task = 1;
 }
 
-message CreateServiceResponse {
-	vulpescloud.services.v1.ServiceDefinition service = 1;
+message PrepareServiceByTaskResponse {
+  vulpescloud.services.v1.ServiceDefinition service = 1;
+}
+
+message PrepareServiceByServiceRequest {
+  vulpescloud.services.v1.ServiceDefinition service = 1;
+}
+
+message PrepareServiceResponse {
+  vulpescloud.services.v1.ServiceDefinition service = 1;
 }
 
 message StartServiceRequest {
-	vulpescloud.services.v1.ServiceDefinition service = 1;
+  vulpescloud.services.v1.ServiceDefinition service = 1;
 }
 
 message StartServiceResponse {
-	vulpescloud.services.v1.ServiceDefinition service = 1;
+  vulpescloud.services.v1.ServiceDefinition service = 1;
 }
 
 message RestartServiceRequest {
-	vulpescloud.services.v1.ServiceDefinition service = 1;
+  vulpescloud.services.v1.ServiceDefinition service = 1;
 }
 
 message RestartServiceResponse {
-	vulpescloud.services.v1.ServiceDefinition service = 1;
+  vulpescloud.services.v1.ServiceDefinition service = 1;
 }
 
 message StopServiceRequest {
-	vulpescloud.services.v1.ServiceDefinition service = 1;
+  vulpescloud.services.v1.ServiceDefinition service = 1;
 }
 
 message StopServiceResponse {
-	vulpescloud.services.v1.ServiceDefinition service = 1;
+  vulpescloud.services.v1.ServiceDefinition service = 1;
 }
 
 message DeleteServiceRequest {
-	vulpescloud.services.v1.ServiceDefinition service = 1;
+  vulpescloud.services.v1.ServiceDefinition service = 1;
 }
 
 message DeleteServiceResponse {
-	vulpescloud.services.v1.ServiceDefinition service = 1;
+  vulpescloud.services.v1.ServiceDefinition service = 1;
 }
 
-message GetAllServicesRequest {
-}
+message GetAllServicesRequest {}
 
 message GetAllServicesResponse {
-	repeated vulpescloud.services.v1.ServiceDefinition services = 1;
+  repeated vulpescloud.services.v1.ServiceDefinition services = 1;
 }
 
 message GetByTaskRequest {
-	vulpescloud.tasks.v1.TaskDefinition task = 1;
+  vulpescloud.tasks.v1.TaskDefinition task = 1;
 }
 
 message GetByTaskResponse {
-	repeated vulpescloud.services.v1.ServiceDefinition services = 1;
+  repeated vulpescloud.services.v1.ServiceDefinition services = 1;
 }
 
 message GetByUuidRequest {
-	string uuid = 1;
+  string uuid = 1;
 }
 
 message GetByUuidResponse {
-	vulpescloud.services.v1.ServiceDefinition service = 1;
+  vulpescloud.services.v1.ServiceDefinition service = 1;
 }
 
 message GetByNameRequest {
-	string name = 1;
+  string name = 1;
 }
 
 message GetByNameResponse {
-	vulpescloud.services.v1.ServiceDefinition service = 1;
+  vulpescloud.services.v1.ServiceDefinition service = 1;
 }
 
 message GetBySoftwareTypeRequest {
-	vulpescloud.node.v1.SoftwareType software_type = 1;
+  vulpescloud.node.v1.SoftwareType software_type = 1;
 }
 
 message GetBySoftwareTypeResponse {
-	repeated vulpescloud.services.v1.ServiceDefinition services = 1;
+  repeated vulpescloud.services.v1.ServiceDefinition services = 1;
 }
 
 message SendCommandRequest {
-	vulpescloud.services.v1.ServiceDefinition service = 1;
-	string command = 2;
+  vulpescloud.services.v1.ServiceDefinition service = 1;
+  string command = 2;
 }
 
 message SendCommandResponse {
-	vulpescloud.services.v1.ServiceDefinition service = 1;
+  bool success = 1;
 }
 
 service ServiceAPIService {
-	rpc CreateService(CreateServiceRequest) returns (CreateServiceResponse);
-	rpc StartService(StartServiceRequest) returns (StartServiceResponse);
-	rpc RestartService(RestartServiceRequest) returns (RestartServiceResponse);
-	rpc StopService(StopServiceRequest) returns (StopServiceResponse);
-	rpc DeleteService(DeleteServiceRequest) returns (DeleteServiceResponse);
-	rpc GetAllServices(GetAllServicesRequest) returns (GetAllServicesResponse);
-	rpc GetByTask(GetByTaskRequest) returns (GetByTaskResponse);
-	rpc GetByUuid(GetByUuidRequest) returns (GetByUuidResponse);
-	rpc GetByName(GetByNameRequest) returns (GetByNameResponse);
-	rpc GetBySoftwareType(GetBySoftwareTypeRequest) returns (GetBySoftwareTypeResponse);
-	rpc SendCommand(SendCommandRequest) returns (SendCommandResponse);
+  rpc PrepareServiceByTask(PrepareServiceByTaskRequest) returns (PrepareServiceByTaskResponse);
+  rpc PrepareServiceByService(PrepareServiceByServiceRequest) returns (PrepareServiceByServiceResponse);
+  rpc StartService(StartServiceRequest) returns (StartServiceResponse);
+  rpc RestartService(RestartServiceRequest) returns (RestartServiceResponse);
+  rpc StopService(StopServiceRequest) returns (StopServiceResponse);
+  rpc DeleteService(DeleteServiceRequest) returns (DeleteServiceResponse);
+  rpc GetAllServices(GetAllServicesRequest) returns (GetAllServicesResponse);
+  rpc GetByTask(GetByTaskRequest) returns (GetByTaskResponse);
+  rpc GetByUuid(GetByUuidRequest) returns (GetByUuidResponse);
+  rpc GetByName(GetByNameRequest) returns (GetByNameResponse);
+  rpc GetBySoftwareType(GetBySoftwareTypeRequest) returns (GetBySoftwareTypeResponse);
+  rpc SendCommand(SendCommandRequest) returns (SendCommandResponse);
 }
