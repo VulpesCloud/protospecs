@@ -21,7 +21,7 @@ message PrepareServiceByServiceRequest {
   vulpescloud.services.v1.ServiceDefinition service = 1;
 }
 
-message PrepareServiceResponse {
+message PrepareServiceByServiceResponse {
   vulpescloud.services.v1.ServiceDefinition service = 1;
 }
 
