@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package vulpescloud.virtualconfig.v1;
+
+option java_multiple_files = true;
+option java_package = "de.vulpescloud.proto.virtualconfig.v1";
+
+message VirtualConfig {
+  string name = 1;
+  int64 created_at = 2;
+  int64 last_updated_at = 3;
+  string config = 4;
+}
+
+service VirtualConfigService {
+  rpc CreateVirtualConfig(CreateVirtualConfigRequest) returns (CreateVirtualConfigResponse);
+  rpc UpdateVirtualConfig(UpdateVirtualConfigRequest) returns (UpdateVirtualConfigResponse);
+  rpc DeleteVirtualConfig(DeleteVirtualConfigRequest) returns (DeleteVirtualConfigResponse);
+  rpc GetByName(GetByNameRequest) returns (GetByNameResponse);
+  rpc GetAll(GetAllRequest) returns (GetAllResponse);
+}
+
+message CreateVirtualConfigRequest {
+  string name = 1;
+  string config = 2;
+}
+message CreateVirtualConfigResponse {
+  VirtualConfig config = 1;
+}
+
+message UpdateVirtualConfigRequest {
+  string name = 1;
+  string config = 2;
+}
+
+message UpdateVirtualConfigResponse {
+  VirtualConfig config = 1;
+}
+message DeleteVirtualConfigRequest {
+  string name = 1;
+}
+
+message DeleteVirtualConfigResponse {
+  bool success = 1;
+}
+
+message GetByNameRequest {
+  string name = 1;
+}
+
+message GetByNameResponse {
+  VirtualConfig config = 1;
+}
+
+message GetAllRequest {}
+
+message GetAllResponse {
+  repeated VirtualConfig configs = 1;
+}
