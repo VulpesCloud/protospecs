@@ -22,3 +22,41 @@ message Node {
   bool head = 7;
   int64 boot_timestamp = 8;
 }
+
+message NodeSnapshot {
+  string name = 1;
+  string uuid = 2;
+  NodeStates state = 3;
+  int32 used_memory = 4;
+  int32 cpu_usage = 5;
+  int32 online_players = 6;
+  int64 timestamp = 8;
+}
+
+message GetAllNodesRequest {}
+
+message GetAllNodesResponse {
+  repeated Node nodes = 1;
+}
+
+message GetNodeByNameRequest {
+  string name = 1;
+}
+
+message GetNodeByNameResponse {
+  Node node = 1;
+}
+
+message GetNodeSnapshotRequest {
+  string name = 1;
+}
+
+message GetNodeSnapshotResponse {
+  NodeSnapshot snapshot = 1;
+}
+
+service ClusterAPIService {
+  rpc GetAllNodes(GetAllNodesRequest) returns (GetAllNodesResponse);
+  rpc GetNodeByName(GetNodeByNameRequest) returns (GetNodeByNameResponse);
+  rpc GetNodeSnapshot(GetNodeSnapshotRequest) returns (GetNodeSnapshotResponse);
+}
