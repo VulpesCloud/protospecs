@@ -2,39 +2,40 @@ syntax = "proto3";
 
 package vulpescloud.tasks.v1;
 
-option java_package = "de.vulpescloud.proto.tasks.v1";
-option java_multiple_files = true;
-
-import "vulpescloud/node/v1/server_software.proto";
 import "google/protobuf/struct.proto";
+import "vulpescloud/node/v1/server_software.proto";
+
+option java_multiple_files = true;
+option java_package = "de.vulpescloud.proto.tasks.v1";
 
 message TaskDefinition {
-    string name = 1;
-    uint64 minimum_memory = 2;
-    uint64 maximum_memory = 3;
-    uint64 start_port = 4;
-    repeated TemplateDefinition templates = 5;
-    bool static_services = 6;
-    uint32 min_online_services = 7;
-    uint32 max_online_services = 8;
-    bool maintenance = 9;
-    bool copy_template_to_static = 10;
-    string service_factory_name = 11;
-    string preferred_node = 12;
-    uint32 max_players = 13;
-    vulpescloud.node.v1.ServerSoftware server_software = 14;
-    optional google.protobuf.Struct attributes = 15;
-    repeated string jvm_args = 16;
-    repeated string env_vars = 17;
+  string name = 1;
+  uint64 minimum_memory = 2;
+  uint64 maximum_memory = 3;
+  uint64 start_port = 4;
+  repeated TemplateDefinition templates = 5;
+  bool static_services = 6;
+  uint32 min_online_services = 7;
+  uint32 max_online_services = 8;
+  bool maintenance = 9;
+  bool copy_template_to_static = 10;
+  string service_factory_name = 11;
+  string preferred_node = 12;
+  uint32 max_players = 13;
+  vulpescloud.node.v1.ServerSoftware server_software = 14;
+  optional google.protobuf.Struct attributes = 15;
+  repeated string jvm_args = 16;
+  repeated string env_vars = 17;
+  bool fallback = 18;
 }
 
 message TemplateDefinition {
-    string name = 1;
-    TemplateStorage storage = 2;
-    int32 weight = 3;
+  string name = 1;
+  TemplateStorage storage = 2;
+  int32 weight = 3;
 }
 
 enum TemplateStorage {
-    TEMPLATE_STORAGE_LOCAL_UNSPECIFIED = 0;
-    TEMPLATE_STORAGE_S3 = 1;
+  TEMPLATE_STORAGE_LOCAL_UNSPECIFIED = 0;
+  TEMPLATE_STORAGE_S3 = 1;
 }

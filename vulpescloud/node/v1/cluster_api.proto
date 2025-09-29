@@ -28,7 +28,7 @@ message NodeSnapshot {
   string uuid = 2;
   NodeStates state = 3;
   int32 used_memory = 4;
-  int32 cpu_usage = 5;
+  double cpu_usage = 5;
   int32 online_players = 6;
   int64 timestamp = 8;
 }
