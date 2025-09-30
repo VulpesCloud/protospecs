@@ -17,11 +17,13 @@ message PrepareServiceByTaskResponse {
   vulpescloud.services.v1.ServiceDefinition service = 1;
 }
 
-message PrepareServiceByServiceRequest {
-  vulpescloud.services.v1.ServiceDefinition service = 1;
+message PrepareServiceByOptionsRequest {
+  optional uint32 ordered_id = 1;
+  optional string node_to_deploy = 2;
+  vulpescloud.tasks.v1.TaskDefinition task = 3;
 }
 
-message PrepareServiceByServiceResponse {
+message PrepareServiceByOptionsResponse {
   vulpescloud.services.v1.ServiceDefinition service = 1;
 }
 
@@ -106,7 +108,7 @@ message SendCommandResponse {
 
 service ServiceAPIService {
   rpc PrepareServiceByTask(PrepareServiceByTaskRequest) returns (PrepareServiceByTaskResponse);
-  rpc PrepareServiceByService(PrepareServiceByServiceRequest) returns (PrepareServiceByServiceResponse);
+  rpc PrepareServiceByOptions(PrepareServiceByOptionsRequest) returns (PrepareServiceByOptionsResponse);
   rpc StartService(StartServiceRequest) returns (StartServiceResponse);
   rpc RestartService(RestartServiceRequest) returns (RestartServiceResponse);
   rpc StopService(StopServiceRequest) returns (StopServiceResponse);

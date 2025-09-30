@@ -19,6 +19,7 @@ message SubscribeRequest {
 
 message PublishRequest {
   Event event = 1;
+  bool forward_to_other_nodes = 2;
 }
 
 message PublishResponse {
