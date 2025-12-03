@@ -18,6 +18,7 @@ plugins:
       - target=ts
       - import_extension=ts
       - json_types=true
+      
   - remote: buf.build/community/stephenh-ts-proto
     out: gen/ts
     opt:
@@ -26,3 +27,13 @@ plugins:
       - useOptionals=messages
       - outputServices=grpc-js
       - lite=false
+      
+  - remote: buf.build/protocolbuffers/go
+    out: gen/go
+    opt:
+      - paths=source_relative
+      
+  - remote: buf.build/grpc/go
+    out: gen/go
+    opt:
+      - paths=source_relative
