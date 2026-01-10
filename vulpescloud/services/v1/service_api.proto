@@ -106,6 +106,24 @@ message SendCommandResponse {
   bool success = 1;
 }
 
+message UpdateServiceMetaRequest {
+  vulpescloud.services.v1.ServiceDefinition service = 1;
+  map<string, string> meta = 2;
+}
+
+message UpdateServiceMetaResponse {
+  vulpescloud.services.v1.ServiceDefinition service = 1;
+}
+
+message UpdatePlayerCountRequest {
+  vulpescloud.services.v1.ServiceDefinition service = 1;
+  uint32 player_count = 2;
+}
+
+message UpdatePlayerCountResponse {
+  vulpescloud.services.v1.ServiceDefinition service = 1;
+}
+
 service ServiceAPIService {
   rpc PrepareServiceByTask(PrepareServiceByTaskRequest) returns (PrepareServiceByTaskResponse);
   rpc PrepareServiceByOptions(PrepareServiceByOptionsRequest) returns (PrepareServiceByOptionsResponse);
@@ -119,4 +137,6 @@ service ServiceAPIService {
   rpc GetByName(GetByNameRequest) returns (GetByNameResponse);
   rpc GetBySoftwareType(GetBySoftwareTypeRequest) returns (GetBySoftwareTypeResponse);
   rpc SendCommand(SendCommandRequest) returns (SendCommandResponse);
+  rpc UpdateServiceMeta(UpdateServiceMetaRequest) returns (UpdateServiceMetaResponse);
+  rpc UpdatePlayerCount(UpdatePlayerCountRequest) returns (UpdatePlayerCountResponse);
 }

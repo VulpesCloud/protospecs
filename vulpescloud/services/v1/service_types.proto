@@ -18,6 +18,7 @@ message ServiceDefinition {
   uint32 player_count = 7;
   google.protobuf.Timestamp start_time = 8;
   string hostname = 9;
+  map<string, string> metadata = 10;
 }
 
 enum ServiceState {
