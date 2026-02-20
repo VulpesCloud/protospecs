@@ -32,7 +32,8 @@ message StartServiceRequest {
 }
 
 message StartServiceResponse {
-  vulpescloud.services.v1.ServiceDefinition service = 1;
+  bool success = 1;
+  string error = 2;
 }
 
 message RestartServiceRequest {
@@ -40,7 +41,8 @@ message RestartServiceRequest {
 }
 
 message RestartServiceResponse {
-  vulpescloud.services.v1.ServiceDefinition service = 1;
+  bool success = 1;
+  string error = 2;
 }
 
 message StopServiceRequest {
@@ -48,7 +50,8 @@ message StopServiceRequest {
 }
 
 message StopServiceResponse {
-  vulpescloud.services.v1.ServiceDefinition service = 1;
+  bool success = 1;
+  string error = 2;
 }
 
 message DeleteServiceRequest {
@@ -56,7 +59,8 @@ message DeleteServiceRequest {
 }
 
 message DeleteServiceResponse {
-  vulpescloud.services.v1.ServiceDefinition service = 1;
+  bool success = 1;
+  string error = 2;
 }
 
 message GetAllServicesRequest {}
