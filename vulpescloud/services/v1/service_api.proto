@@ -9,6 +9,23 @@ import "vulpescloud/tasks/v1/task_types.proto";
 option java_multiple_files = true;
 option java_package = "de.vulpescloud.proto.services.v1";
 
+message GetServiceLogsRequest {
+  vulpescloud.services.v1.ServiceDefinition service = 1;
+  optional uint32 limit = 2;  // Optional: max number of log lines to return
+}
+
+message GetServiceLogsResponse {
+  repeated string lines = 1;
+}
+
+message StreamServiceLogsRequest {
+  vulpescloud.services.v1.ServiceDefinition service = 1;
+}
+
+message StreamServiceLogsResponse {
+  string line = 1;
+}
+
 message PrepareServiceByTaskRequest {
   vulpescloud.tasks.v1.TaskDefinition task = 1;
 }
@@ -143,4 +160,6 @@ service ServiceAPIService {
   rpc SendCommand(SendCommandRequest) returns (SendCommandResponse);
   rpc UpdateServiceMeta(UpdateServiceMetaRequest) returns (UpdateServiceMetaResponse);
   rpc UpdatePlayerCount(UpdatePlayerCountRequest) returns (UpdatePlayerCountResponse);
+  rpc GetServiceLogs(GetServiceLogsRequest) returns (GetServiceLogsResponse);
+  rpc StreamServiceLogs(StreamServiceLogsRequest) returns (stream StreamServiceLogsResponse);
 }
