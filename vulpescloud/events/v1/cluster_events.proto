@@ -1,0 +1,13 @@
+syntax = "proto3";
+package vulpescloud.events.v1;
+
+option java_multiple_files = true;
+option java_package = "de.vulpescloud.proto.events.v1";
+
+import "vulpescloud/node/v1/cluster_api.proto";
+
+message NodeStateChangeEvent {
+    vulpescloud.node.v1.Node node = 1;
+    vulpescloud.node.v1.NodeStates old_state = 2;
+    vulpescloud.node.v1.NodeStates new_state = 3;
+}

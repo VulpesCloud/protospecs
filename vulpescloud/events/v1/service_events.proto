@@ -1,0 +1,18 @@
+syntax = "proto3";
+package vulpescloud.events.v1;
+
+option java_multiple_files = true;
+option java_package = "de.vulpescloud.proto.events.v1";
+
+import "vulpescloud/services/v1/service_types.proto";
+
+message ServiceStateChangedEvent {
+    vulpescloud.services.v1.ServiceDefinition service = 1;
+    vulpescloud.services.v1.ServiceState old_state = 2;
+    vulpescloud.services.v1.ServiceState new_state = 3;
+}
+
+message ServiceLogEvent {
+    vulpescloud.services.v1.ServiceDefinition service = 1;
+    string message = 2;
+}
