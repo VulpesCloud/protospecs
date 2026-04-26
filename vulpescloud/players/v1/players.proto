@@ -1,0 +1,40 @@
+syntax = "proto3";
+package vulpescloud.players.v1;
+
+option java_multiple_files = true;
+option java_package = "de.vulpescloud.proto.players.v1";
+
+message OfflinePlayer {
+    string uuid = 1;
+    string name = 2;
+    uint64 first_seen = 3;
+    uint64 last_seen = 4;
+}
+
+message OnlinePlayer {
+    string uuid = 1;
+    string name = 2;
+    string proxyServiceName = 3;
+    string serverServiceName = 4;
+}
+
+message GetAllOnlinePlayersRequest {}
+message GetAllOnlinePlayersResponse {
+    repeated OnlinePlayer onlinePlayers = 1;
+}
+
+message GetOfflinePlayersRequest {}
+message GetOfflinePlayersResponse {
+    repeated OfflinePlayer offlinePlayers = 1;
+}
+
+message GetFirstSeenPlayerRequest {}
+message GetFirstSeenPlayerResponse {
+    optional OfflinePlayer player = 1;
+}
+
+service PlayersService {
+    rpc GetAllOnlinePlayers(GetAllOnlinePlayersRequest) returns (GetAllOnlinePlayersResponse);
+    rpc GetAllOfflinePlayers(GetOfflinePlayersRequest) returns (GetOfflinePlayersResponse);
+    rpc GetFirstSeenPlayer(GetFirstSeenPlayerRequest) returns (GetFirstSeenPlayerResponse);
+}
