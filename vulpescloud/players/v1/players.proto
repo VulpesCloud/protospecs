@@ -38,7 +38,7 @@ message GetAllOnlinePlayerOfNodeRequest {
 }
 
 message GetAllOnlinePlayerOfNodeResponse {
-  repeated vulpescloud.players.v1.Player players = 1;
+  repeated vulpescloud.players.v1.OnlinePlayer players = 1;
 }
 
 service PlayersService {
