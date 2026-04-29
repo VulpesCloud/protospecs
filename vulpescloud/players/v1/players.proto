@@ -33,8 +33,17 @@ message GetFirstSeenPlayerResponse {
     optional OfflinePlayer player = 1;
 }
 
+message GetAllOnlinePlayerOfNodeRequest {
+  string name = 1;
+}
+
+message GetAllOnlinePlayerOfNodeResponse {
+  repeated vulpescloud.players.v1.Player players = 1;
+}
+
 service PlayersService {
     rpc GetAllOnlinePlayers(GetAllOnlinePlayersRequest) returns (GetAllOnlinePlayersResponse);
     rpc GetAllOfflinePlayers(GetOfflinePlayersRequest) returns (GetOfflinePlayersResponse);
     rpc GetFirstSeenPlayer(GetFirstSeenPlayerRequest) returns (GetFirstSeenPlayerResponse);
+    rpc GetAllOnlinePlayerOfNode(GetAllOnlinePlayerOfNodeRequest) returns (GetAllOnlinePlayerOfNodeResponse);
 }

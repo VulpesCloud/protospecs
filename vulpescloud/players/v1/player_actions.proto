@@ -1,0 +1,66 @@
+syntax = "proto3";
+package vulpescloud.players.v1;
+
+option java_multiple_files = true;
+option java_package = "de.vulpescloud.proto.players.v1";
+
+import "vulpescloud/players/v1/players.proto";
+
+message KickPlayerRequest {
+    string uuid = 1;
+    string reason = 2;
+}
+
+message KickPlayerResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message SendMessageRequest {
+    string uuid = 1;
+    string message = 2;
+}
+
+message SendMessageResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message SendTitleRequest {
+    string uuid = 1;
+    string title = 2;
+    string subtitle = 3;
+}
+
+message SendTitleResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message SendActionBarRequest {
+    string uuid = 1;
+    string message = 2;
+}
+
+message SendActionBarResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+message ConnectPlayerRequest {
+    string uuid = 1;
+    string targetServer = 2;
+}
+
+message ConnectPlayerResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+service PlayerActionsService {
+    rpc KickPlayer(KickPlayerRequest) returns (KickPlayerResponse);
+    rpc SendMessage(SendMessageRequest) returns (SendMessageResponse);
+    rpc SendTitle(SendTitleRequest) returns (SendTitleResponse);
+    rpc SendActionBar(SendActionBarRequest) returns (SendActionBarResponse);
+    rpc ConnectPlayer(ConnectPlayerRequest) returns (ConnectPlayerResponse);
+}

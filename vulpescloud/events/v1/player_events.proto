@@ -1,0 +1,24 @@
+syntax = "proto3";
+package vulpescloud.events.v1;
+
+option java_multiple_files = true;
+option java_package = "de.vulpescloud.proto.events.v1";
+
+import "vulpescloud/players/v1/players.proto";
+
+message PlayerJoinEvent {
+    vulpescloud.players.v1.OnlinePlayer player = 1;
+    int64 timestamp = 2;
+}
+
+message PlayerQuitEvent {
+    vulpescloud.players.v1.OfflinePlayer player = 1;
+    int64 timestamp = 2;
+}
+
+message PlayerSwitchServerEvent {
+    vulpescloud.players.v1.OnlinePlayer player = 1;
+    string oldServer = 2;
+    string newServer = 3;
+    int64 timestamp = 4;
+}
