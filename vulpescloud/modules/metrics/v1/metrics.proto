@@ -1,0 +1,230 @@
+syntax = "proto3";
+package vulpescloud.modules.metrics.v1;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+// ---------------------------------------------------------------------------
+// Core data types
+// ---------------------------------------------------------------------------
+
+message Point {
+  string measurement_name = 1;
+  map<string, string>     tags      = 2;
+  map<string, FieldValue> fields    = 3;
+  int64                   timestamp = 4;
+}
+
+message FieldValue {
+  oneof value {
+    double double_value = 1;
+    int64  int_value    = 2;
+    uint64 uint_value   = 3;
+    string string_value = 4;
+    bool   bool_value   = 5;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Write
+// ---------------------------------------------------------------------------
+
+message WriteRequest {
+  string          org    = 1;
+  string          bucket = 2;
+  repeated Point  points = 3;
+  WritePrecision  precision = 4;
+}
+
+enum WritePrecision {
+  NANOSECONDS  = 0;
+  MICROSECONDS = 1;
+  MILLISECONDS = 2;
+  SECONDS      = 3;
+}
+
+message WriteResponse {
+  uint32 points_written  = 1;
+  uint32 points_rejected = 2;
+  repeated string errors = 3;
+}
+
+// ---------------------------------------------------------------------------
+// Query  (Flux-style)
+// ---------------------------------------------------------------------------
+
+message QueryRequest {
+  string org    = 1;
+  string query  = 2;
+  QueryDialect dialect = 3;
+}
+
+message QueryDialect {
+  repeated string annotations   = 1;
+  bool            header        = 2;
+  string          delimiter     = 3;
+  repeated string comment_prefix = 4;
+  DateTimeFormat  date_time_format = 5;
+}
+
+enum DateTimeFormat {
+  RFC3339      = 0;
+  RFC3339NANO  = 1;
+  EPOCH_NANOS  = 2;
+}
+
+message QueryResponse {
+  repeated Table tables = 1;
+}
+
+message Table {
+  repeated Column          columns = 1;
+  repeated Row             rows    = 2;
+  map<string, string>      group_key = 3;
+}
+
+message Column {
+  string        name      = 1;
+  ColumnType    type      = 2;
+  bool          is_group  = 3;
+  string        default_value = 4;
+}
+
+enum ColumnType {
+  COLUMN_TYPE_UNKNOWN  = 0;
+  COLUMN_TYPE_LONG     = 1;
+  COLUMN_TYPE_DOUBLE   = 2;
+  COLUMN_TYPE_BOOL     = 3;
+  COLUMN_TYPE_STRING   = 4;
+  COLUMN_TYPE_TIME     = 5;
+  COLUMN_TYPE_UINT     = 6;
+}
+
+message Row {
+  repeated FieldValue values = 1;
+}
+
+// ---------------------------------------------------------------------------
+// Bucket management
+// ---------------------------------------------------------------------------
+
+message Bucket {
+  string name              = 1;
+  string org               = 2;
+  string description       = 3;
+  int64  retention_seconds = 4; // 0 = infinite
+  int64  shard_group_duration_seconds = 5;
+  BucketType type          = 6;
+}
+
+enum BucketType {
+  BUCKET_TYPE_USER   = 0;
+  BUCKET_TYPE_SYSTEM = 1;
+}
+
+message CreateBucketRequest  { Bucket bucket = 1; }
+message CreateBucketResponse { Bucket bucket = 1; }
+
+message GetBucketRequest     { string org = 1; string name = 2; }
+message GetBucketResponse    { Bucket bucket = 1; }
+
+message ListBucketsRequest   { string org = 1; int32 limit = 2; int32 offset = 3; }
+message ListBucketsResponse  { repeated Bucket buckets = 1; }
+
+message DeleteBucketRequest  { string org = 1; string name = 2; }
+
+// ---------------------------------------------------------------------------
+// Measurement / tag / field introspection 
+// ---------------------------------------------------------------------------
+
+message MeasurementsRequest  { string org = 1; string bucket = 2; }
+message MeasurementsResponse { repeated string measurements = 1; }
+
+message TagKeysRequest {
+  string org         = 1;
+  string bucket      = 2;
+  string measurement = 3;
+}
+message TagKeysResponse  { repeated string tag_keys = 1; }
+
+message TagValuesRequest {
+  string org         = 1;
+  string bucket      = 2;
+  string measurement = 3;
+  string tag_key     = 4;
+}
+message TagValuesResponse { repeated string tag_values = 1; }
+
+message FieldKeysRequest {
+  string org         = 1;
+  string bucket      = 2;
+  string measurement = 3;
+}
+message FieldKeysResponse { repeated string field_keys = 1; }
+
+// ---------------------------------------------------------------------------
+// Delete  (predicate-based, like InfluxDB /api/v2/delete)
+// ---------------------------------------------------------------------------
+
+message DeleteRequest {
+  string org    = 1;
+  string bucket = 2;
+  int64  start  = 3; // Unix nanoseconds
+  int64  stop   = 4; // Unix nanoseconds
+  string predicate = 5; // e.g. `_measurement="cpu" AND host="server01"`
+}
+
+message DeleteResponse {
+  uint64 points_deleted = 1;
+}
+
+// ---------------------------------------------------------------------------
+// Health / ping
+// ---------------------------------------------------------------------------
+
+message HealthResponse {
+  HealthStatus status  = 1;
+  string       message = 2;
+  string       version = 3;
+  string       commit  = 4;
+}
+
+enum HealthStatus {
+  HEALTH_STATUS_UNKNOWN = 0;
+  HEALTH_STATUS_PASS    = 1;
+  HEALTH_STATUS_FAIL    = 2;
+}
+
+// ---------------------------------------------------------------------------
+// Service definition
+// ---------------------------------------------------------------------------
+
+service StatisticsService {
+
+  // --- Write ---
+  rpc Write        (WriteRequest)  returns (WriteResponse);
+  rpc WriteStream  (stream Point)  returns (WriteResponse);  // client-side streaming
+
+  // --- Query ---
+  rpc Query        (QueryRequest)  returns (QueryResponse);
+  rpc QueryStream  (QueryRequest)  returns (stream Table);   // server-side streaming
+
+  // --- Bucket management ---
+  rpc CreateBucket (CreateBucketRequest) returns (CreateBucketResponse);
+  rpc GetBucket    (GetBucketRequest)    returns (GetBucketResponse);
+  rpc ListBuckets  (ListBucketsRequest)  returns (ListBucketsResponse);
+  rpc DeleteBucket (DeleteBucketRequest) returns (google.protobuf.Empty);
+
+  // --- Schema introspection ---
+  rpc GetMeasurements (MeasurementsRequest) returns (MeasurementsResponse);
+  rpc GetTagKeys      (TagKeysRequest)      returns (TagKeysResponse);
+  rpc GetTagValues    (TagValuesRequest)    returns (TagValuesResponse);
+  rpc GetFieldKeys    (FieldKeysRequest)    returns (FieldKeysResponse);
+
+  // --- Delete ---
+  rpc Delete (DeleteRequest) returns (DeleteResponse);
+
+  // --- Health ---
+  rpc Health (google.protobuf.Empty) returns (HealthResponse);
+  rpc Ping   (google.protobuf.Empty) returns (google.protobuf.Empty);
+}
