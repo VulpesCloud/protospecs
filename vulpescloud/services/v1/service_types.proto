@@ -22,7 +22,7 @@ message ServiceDefinition {
 }
 
 message ServiceSnapshot {
-  vulpescloud.tasks.v1.TaskSnapshot task = 1;
+  vulpescloud.tasks.v1.TaskDefinition task = 1;
   string uuid = 2;
   uint32 ordered_id = 3;
   uint32 port = 4;
