@@ -21,6 +21,27 @@ message ServiceDefinition {
   map<string, string> metadata = 10;
 }
 
+message ServiceSnapshot {
+  vulpescloud.tasks.v1.TaskSnapshot task = 1;
+  string uuid = 2;
+  uint32 ordered_id = 3;
+  uint32 port = 4;
+  string node = 5;
+  ServiceState state = 6;
+  uint32 player_count = 7;
+  google.protobuf.Timestamp start_time = 8;
+  string hostname = 9;
+  map<string, string> metadata = 10;
+  google.protobuf.Timestamp snapshot_time = 11;
+  uint64 pid = 12;
+  double cpu_usage = 13;
+  double system_cpu_usage = 14;
+  uint64 max_heap_memory = 15;
+  uint64 heap_usage_memory = 16;
+  uint64 no_heap_usage_memory = 17;
+  uint64 uptime_millis = 18;
+}
+
 enum ServiceState {
   SERVICE_STATE_UNSPECIFIED = 0;
   SERVICE_STATE_RUNNING = 1;

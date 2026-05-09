@@ -145,6 +145,22 @@ message UpdatePlayerCountResponse {
   vulpescloud.services.v1.ServiceDefinition service = 1;
 }
 
+message UpdateServiceSnapshotRequest {
+  vulpescloud.services.v1.ServiceSnapshot snapshot = 1;
+}
+
+message UpdateServiceSnapshotResponse {
+  vulpescloud.services.v1.ServiceSnapshot snapshot = 1;
+}
+
+message GetLatestServiceSnapshotRequest {
+  vulpescloud.services.v1.ServiceDefinition service = 1;
+}
+
+message GetLatestServiceSnapshotResponse {
+  vulpescloud.services.v1.ServiceSnapshot snapshot = 1;
+}
+
 service ServiceAPIService {
   rpc PrepareServiceByTask(PrepareServiceByTaskRequest) returns (PrepareServiceByTaskResponse);
   rpc PrepareServiceByOptions(PrepareServiceByOptionsRequest) returns (PrepareServiceByOptionsResponse);
@@ -162,4 +178,6 @@ service ServiceAPIService {
   rpc UpdatePlayerCount(UpdatePlayerCountRequest) returns (UpdatePlayerCountResponse);
   rpc GetServiceLogs(GetServiceLogsRequest) returns (GetServiceLogsResponse);
   rpc StreamServiceLogs(StreamServiceLogsRequest) returns (stream StreamServiceLogsResponse);
+  rpc UpdateServiceSnapshot(UpdateServiceSnapshotRequest) returns (UpdateServiceSnapshotResponse);
+  rpc GetLatestServiceSnapshot(GetLatestServiceSnapshotRequest) returns (GetLatestServiceSnapshotResponse);
 }
