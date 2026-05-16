@@ -24,3 +24,18 @@ message PlayerSwitchServerEvent {
     string newServer = 3;
     int64 timestamp = 4;
 }
+
+message PlayerActionEvent {
+    vulpescloud.players.v1.OnlinePlayer player = 1;
+    PlayerActions action = 2;
+    map<string, string> data = 3;
+}
+
+enum PlayerActions {
+    UNSPECIFIED = 0;
+    KICK = 1;
+    MESSAGE = 2;
+    TITLE = 3;
+    ACTION_BAR = 4;
+    CONNECT = 5;
+}
