@@ -59,10 +59,24 @@ message UpdateTaskResponse {
   vulpescloud.tasks.v1.TaskDefinition task = 1;
 }
 
+message PrepareServiceOnTaskRequest {
+  vulpescloud.tasks.v1.TaskDefinition task = 1;
+  optional string nodeName = 2;
+  optional int64 memory = 3;
+  int32 amount = 4;
+  bool start = 5;
+  uint32 startId = 6;
+}
+
+message PrepareServiceOnTaskResponse {
+  repeated vulpescloud.services.v1.ServiceDefinition services = 1;
+}
+
 service TasksAPIService {
   rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse);
   rpc DeleteTask(DeleteTaskRequest) returns (DeleteTaskResponse);
   rpc GetAllTasks(GetAllTasksRequest) returns (GetAllTasksResponse);
   rpc GetByName(GetByNameRequest) returns (GetByNameResponse);
   rpc UpdateTask(UpdateTaskRequest) returns (UpdateTaskResponse);
+  rpc PrepareServiceOnTask(PrepareServiceOnTaskRequest) returns (PrepareServiceOnTaskResponse);
 }

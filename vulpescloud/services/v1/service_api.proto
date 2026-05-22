@@ -26,24 +26,6 @@ message StreamServiceLogsResponse {
   string line = 1;
 }
 
-message PrepareServiceByTaskRequest {
-  vulpescloud.tasks.v1.TaskDefinition task = 1;
-}
-
-message PrepareServiceByTaskResponse {
-  vulpescloud.services.v1.ServiceDefinition service = 1;
-}
-
-message PrepareServiceByOptionsRequest {
-  optional uint32 ordered_id = 1;
-  optional string node_to_deploy = 2;
-  vulpescloud.tasks.v1.TaskDefinition task = 3;
-}
-
-message PrepareServiceByOptionsResponse {
-  vulpescloud.services.v1.ServiceDefinition service = 1;
-}
-
 message StartServiceRequest {
   vulpescloud.services.v1.ServiceDefinition service = 1;
 }
@@ -162,8 +144,6 @@ message GetLatestServiceSnapshotResponse {
 }
 
 service ServiceAPIService {
-  rpc PrepareServiceByTask(PrepareServiceByTaskRequest) returns (PrepareServiceByTaskResponse);
-  rpc PrepareServiceByOptions(PrepareServiceByOptionsRequest) returns (PrepareServiceByOptionsResponse);
   rpc StartService(StartServiceRequest) returns (StartServiceResponse);
   rpc RestartService(RestartServiceRequest) returns (RestartServiceResponse);
   rpc StopService(StopServiceRequest) returns (StopServiceResponse);
