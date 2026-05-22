@@ -3,6 +3,7 @@ syntax = "proto3";
 package vulpescloud.tasks.v1;
 
 import "vulpescloud/tasks/v1/task_types.proto";
+import "vulpescloud/services/v1/service_types.proto";
 
 option java_multiple_files = true;
 option java_package = "de.vulpescloud.proto.tasks.v1";
