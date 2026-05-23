@@ -8,6 +8,7 @@ service AuthService {
   rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
   rpc IsTokenValid(IsTokenValidRequest) returns (IsTokenValidResponse);
   rpc GetUserByName(GetUserByNameRequest) returns (GetUserByNameResponse);
+  rpc GetUserByExtraData(GetUserByExtraDataRequest) returns (GetUserByExtraDataResponse);
   rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
 }
 
@@ -16,6 +17,16 @@ message ProtoUser {
   repeated string groups = 2;
   repeated string permissions = 3;
   map<string, string> extraData = 4;
+}
+
+message GetUserByExtraDataRequest {
+  string key = 1;
+  string value = 2;
+}
+
+message GetUserByExtraDataResponse {
+  ProtoUser user = 1;
+  UserError error = 2;
 }
 
 message AuthenticateRequest {
