@@ -55,8 +55,34 @@ message GetNodeSnapshotResponse {
   NodeSnapshot snapshot = 1;
 }
 
+message PlayerCommandSource {
+  string playerName = 1;
+  string playerUuid = 2;
+  string playerProxyServiceName = 3;
+  string playerServerServiceName = 4;
+}
+
+message UserCommandSource {
+  string username = 1;
+  map<string, string> extraData = 2;
+}
+
+message ExecuteCommandRequest {
+  oneof source {
+    PlayerCommandSource playerSource = 1;
+    UserCommandSource userSource = 2;
+  }
+  string command = 3;
+}
+
+message ExecuteCommandResponse {
+  bool success = 1;
+  repeated string output = 2;
+}
+
 service ClusterAPIService {
   rpc GetAllNodes(GetAllNodesRequest) returns (GetAllNodesResponse);
   rpc GetNodeByName(GetNodeByNameRequest) returns (GetNodeByNameResponse);
   rpc GetNodeSnapshot(GetNodeSnapshotRequest) returns (GetNodeSnapshotResponse);
+  rpc ExecuteCommand(ExecuteCommandRequest) returns (ExecuteCommandResponse);
 }
