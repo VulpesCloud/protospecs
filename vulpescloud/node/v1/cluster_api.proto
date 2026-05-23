@@ -80,9 +80,22 @@ message ExecuteCommandResponse {
   repeated string output = 2;
 }
 
+message TabCompleteRequest {
+  oneof source {
+    PlayerCommandSource playerSource = 1;
+    UserCommandSource userSource = 2;
+  }
+  string command = 3;
+}
+
+message TabCompleteResponse {
+  repeated string suggestions = 1;
+}
+
 service ClusterAPIService {
   rpc GetAllNodes(GetAllNodesRequest) returns (GetAllNodesResponse);
   rpc GetNodeByName(GetNodeByNameRequest) returns (GetNodeByNameResponse);
   rpc GetNodeSnapshot(GetNodeSnapshotRequest) returns (GetNodeSnapshotResponse);
+  rpc TabComplete(TabCompleteRequest) returns (TabCompleteResponse);
   rpc ExecuteCommand(ExecuteCommandRequest) returns (ExecuteCommandResponse);
 }
