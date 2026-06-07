@@ -11,3 +11,11 @@ message NodeStateChangeEvent {
     vulpescloud.node.v1.NodeStates old_state = 2;
     vulpescloud.node.v1.NodeStates new_state = 3;
 }
+
+message NodeLockEvent {
+    vulpescloud.node.v1.Node node = 1;
+}
+
+message NodeUnlockEvent {
+    vulpescloud.node.v1.Node node = 1;
+}

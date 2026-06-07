@@ -10,6 +10,7 @@ enum NodeStates {
   NODE_STATES_BOOTING = 1;
   NODE_STATES_ONLINE = 2;
   NODE_STATES_DRAINING = 3;
+  NODE_STATES_UNKNOWN = 4;
 }
 
 message Node {
@@ -21,6 +22,7 @@ message Node {
   int32 max_memory = 6;
   bool head = 7;
   int64 boot_timestamp = 8;
+  bool locked = 9;
 }
 
 message NodeSnapshot {
@@ -31,6 +33,7 @@ message NodeSnapshot {
   double cpu_usage = 5;
   int32 online_players = 6;
   int64 timestamp = 8;
+  bool locked = 9;
 }
 
 message GetAllNodesRequest {}
@@ -92,10 +95,19 @@ message TabCompleteResponse {
   repeated string suggestions = 1;
 }
 
+message PingRequest {
+
+}
+
+message PingResponse {
+  
+}
+
 service ClusterAPIService {
   rpc GetAllNodes(GetAllNodesRequest) returns (GetAllNodesResponse);
   rpc GetNodeByName(GetNodeByNameRequest) returns (GetNodeByNameResponse);
   rpc GetNodeSnapshot(GetNodeSnapshotRequest) returns (GetNodeSnapshotResponse);
   rpc TabComplete(TabCompleteRequest) returns (TabCompleteResponse);
   rpc ExecuteCommand(ExecuteCommandRequest) returns (ExecuteCommandResponse);
+  rpc Ping(PingRequest) returns (PingResponse);
 }
