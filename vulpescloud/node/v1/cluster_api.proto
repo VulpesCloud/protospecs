@@ -103,6 +103,14 @@ message PingResponse {
   
 }
 
+message HeartbeatRequest {
+
+}
+
+message HeartbeatResponse {
+
+}
+
 service ClusterAPIService {
   rpc GetAllNodes(GetAllNodesRequest) returns (GetAllNodesResponse);
   rpc GetNodeByName(GetNodeByNameRequest) returns (GetNodeByNameResponse);
@@ -110,4 +118,5 @@ service ClusterAPIService {
   rpc TabComplete(TabCompleteRequest) returns (TabCompleteResponse);
   rpc ExecuteCommand(ExecuteCommandRequest) returns (ExecuteCommandResponse);
   rpc Ping(PingRequest) returns (PingResponse);
+  rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
 }
