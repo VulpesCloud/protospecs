@@ -22,7 +22,7 @@ message Node {
   int32 max_memory = 6;
   bool head = 7;
   int64 boot_timestamp = 8;
-  bool locked = 9;
+  map<string, string> attributes = 9;
 }
 
 message NodeSnapshot {
@@ -33,7 +33,7 @@ message NodeSnapshot {
   double cpu_usage = 5;
   int32 online_players = 6;
   int64 timestamp = 8;
-  bool locked = 9;
+  map<string, string> attributes = 9;
 }
 
 message GetAllNodesRequest {}
