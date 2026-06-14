@@ -16,3 +16,8 @@ message ServiceLogEvent {
     vulpescloud.services.v1.ServiceDefinition service = 1;
     string message = 2;
 }
+
+message ServiceLockEvent {
+    vulpescloud.services.v1.ServiceDefinition service = 1;
+    bool locked = 2;
+}

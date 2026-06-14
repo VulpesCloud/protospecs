@@ -111,6 +111,16 @@ message HeartbeatResponse {
 
 }
 
+message AuthenticateNodeRequest {
+  string node_name = 1;
+  string node_uuid = 2;
+}
+
+message AuthenticateNodeResponse {
+  bool success = 1;
+  string message = 2;
+}
+
 service ClusterAPIService {
   rpc GetAllNodes(GetAllNodesRequest) returns (GetAllNodesResponse);
   rpc GetNodeByName(GetNodeByNameRequest) returns (GetNodeByNameResponse);
@@ -119,4 +129,5 @@ service ClusterAPIService {
   rpc ExecuteCommand(ExecuteCommandRequest) returns (ExecuteCommandResponse);
   rpc Ping(PingRequest) returns (PingResponse);
   rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
+  rpc AuthenticateNode(AuthenticateNodeRequest) returns (AuthenticateNodeResponse);
 }
