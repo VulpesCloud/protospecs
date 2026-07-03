@@ -19,6 +19,7 @@ message ServiceDefinition {
   google.protobuf.Timestamp start_time = 8;
   string hostname = 9;
   map<string, string> metadata = 10;
+  string pid_on_host = 11;
 }
 
 message ServiceSnapshot {
@@ -40,6 +41,7 @@ message ServiceSnapshot {
   uint64 heap_usage_memory = 16;
   uint64 no_heap_usage_memory = 17;
   uint64 uptime_millis = 18;
+  string pid_on_host = 19;
 }
 
 enum ServiceState {
