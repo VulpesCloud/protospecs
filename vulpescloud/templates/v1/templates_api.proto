@@ -1,0 +1,146 @@
+syntax = "proto3";
+
+package vulpescloud.templates.v1;
+
+import "vulpescloud/templates/v1/templates_types.proto";
+
+option java_multiple_files = true;
+option java_package = "de.vulpescloud.proto.templates.v1";
+
+message CreateTemplateRequest {
+  TemplateDefinition template = 1;
+  TemplateLocation destination = 2;
+}
+
+message CreateTemplateResponse {
+  TemplateDefinition template = 1;
+}
+
+message DeleteTemplateRequest {
+  TemplateReference template = 1;
+}
+
+message DeleteTemplateResponse {
+  TemplateOperationResult result = 1;
+}
+
+message GetTemplateRequest {
+  TemplateReference template = 1;
+}
+
+message GetTemplateResponse {
+  TemplateDefinition template = 1;
+}
+
+message ListTemplatesRequest {
+  TemplateLocation location = 1;
+}
+
+message ListTemplatesResponse {
+  repeated TemplateDefinition templates = 1;
+}
+
+message MoveTemplateRequest {
+  TemplateReference source = 1;
+  TemplateReference destination = 2;
+  bool overwrite = 3;
+}
+
+message MoveTemplateResponse {
+  TemplateOperationResult result = 1;
+}
+
+message CopyTemplateRequest {
+  TemplateReference source = 1;
+  TemplateReference destination = 2;
+  bool overwrite = 3;
+}
+
+message CopyTemplateResponse {
+  TemplateOperationResult result = 1;
+}
+
+message CreateDirectoryRequest {
+  TemplateReference template = 1;
+  string path = 2;
+}
+
+message CreateDirectoryResponse {
+  TemplateOperationResult result = 1;
+}
+
+message DeleteDirectoryRequest {
+  TemplateReference template = 1;
+  string path = 2;
+  bool recursive = 3;
+}
+
+message DeleteDirectoryResponse {
+  TemplateOperationResult result = 1;
+}
+
+message CreateFileRequest {
+  TemplateReference template = 1;
+  string path = 2;
+  bytes content = 3;
+}
+
+message CreateFileResponse {
+  TemplateOperationResult result = 1;
+}
+
+message UpdateFileRequest {
+  TemplateReference template = 1;
+  string path = 2;
+  bytes content = 3;
+}
+
+message UpdateFileResponse {
+  TemplateOperationResult result = 1;
+}
+
+message DeleteFileRequest {
+  TemplateReference template = 1;
+  string path = 2;
+}
+
+message DeleteFileResponse {
+  TemplateOperationResult result = 1;
+}
+
+message ReadFileRequest {
+  TemplateReference template = 1;
+  string path = 2;
+}
+
+message ReadFileResponse {
+  TemplateFile file = 1;
+}
+
+message ListDirectoryRequest {
+  TemplateReference template = 1;
+  string path = 2;
+}
+
+message ListDirectoryResponse {
+  repeated TemplateDirectoryEntry entries = 1;
+}
+
+service TemplateService {
+  rpc CreateTemplate(CreateTemplateRequest) returns (CreateTemplateResponse);
+  rpc DeleteTemplate(DeleteTemplateRequest) returns (DeleteTemplateResponse);
+  rpc GetTemplate(GetTemplateRequest) returns (GetTemplateResponse);
+  rpc ListTemplates(ListTemplatesRequest) returns (ListTemplatesResponse);
+
+  rpc MoveTemplate(MoveTemplateRequest) returns (MoveTemplateResponse);
+  rpc CopyTemplate(CopyTemplateRequest) returns (CopyTemplateResponse);
+
+  rpc CreateDirectory(CreateDirectoryRequest) returns (CreateDirectoryResponse);
+  rpc DeleteDirectory(DeleteDirectoryRequest) returns (DeleteDirectoryResponse);
+
+  rpc CreateFile(CreateFileRequest) returns (CreateFileResponse);
+  rpc UpdateFile(UpdateFileRequest) returns (UpdateFileResponse);
+  rpc DeleteFile(DeleteFileRequest) returns (DeleteFileResponse);
+  rpc ReadFile(ReadFileRequest) returns (ReadFileResponse);
+  rpc ListDirectory(ListDirectoryRequest) returns (ListDirectoryResponse);
+}
