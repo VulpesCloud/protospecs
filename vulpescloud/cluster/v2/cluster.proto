@@ -1,0 +1,273 @@
+syntax = "proto3";
+
+package vulpescloud.cluster.v2;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+option java_package = "de.vulpescloud.proto.cluster.v2";
+
+// Lifecycle states for a cluster member.
+// These values are explicit and do not use a catch-all UNKNOWN state.
+enum NodeState {
+  NODE_STATE_UNSPECIFIED = 0;
+  NODE_STATE_REGISTERED = 1;
+  NODE_STATE_JOINING = 2;
+  NODE_STATE_ONLINE = 3;
+  NODE_STATE_DRAINING = 4;
+  NODE_STATE_SUSPECT = 5;
+  NODE_STATE_LOST = 6;
+  NODE_STATE_OFFLINE = 7;
+}
+
+// Controller ownership is derived from this lease. The lease is the
+// authoritative cluster ownership state stored in the shared database.
+message ControllerLease {
+  // Controller-owned lease holder.
+  string leader_node_id = 1;
+  // Monotonically increasing term for the current controller lease.
+  uint64 controller_term = 2;
+  // When the lease expires, a new controller election may proceed.
+  google.protobuf.Timestamp lease_expires_at = 3;
+  // Cluster revision after the lease update.
+  uint64 cluster_revision = 4;
+}
+
+// Controller-owned membership record for a cluster node.
+message ClusterMember {
+  // Immutable identity for the membership record.
+  string node_id = 1;
+  // Controller-owned name of the node.
+  string node_name = 2;
+  // Controller-owned RPC endpoint for the node.
+  string grpc_endpoint = 3;
+  // Controller-owned configured memory capacity.
+  uint32 configured_memory_bytes = 4;
+  // Controller-owned node labels and attributes.
+  map<string, string> labels = 5;
+  // Controller-owned lifecycle state for the member.
+  NodeState membership_state = 6;
+  // Boot generation supplied by the node; used to invalidate stale joins.
+  uint64 boot_generation = 7;
+  // Monotonically increasing revision for the membership record.
+  uint64 state_revision = 8;
+  // Controller-owned timestamps.
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp updated_at = 10;
+}
+
+// Node-reported health snapshot. This does not overwrite controller-owned
+// membership fields and must never be accepted in place of a membership record.
+message NodeHeartbeat {
+  // Node-reported identity.
+  string node_id = 1;
+  // Node-reported boot generation.
+  uint64 boot_generation = 2;
+  // Controller term observed by the node when it reported health.
+  uint64 observed_controller_term = 3;
+  // Node-reported timestamp.
+  google.protobuf.Timestamp observed_at = 4;
+  // Node-reported memory usage.
+  uint32 used_memory_bytes = 5;
+  // Node-reported CPU usage.
+  double cpu_usage = 6;
+  // Node-reported online player count.
+  uint32 online_player_count = 7;
+  // Optional node-reported running-service count.
+  uint32 running_service_count = 8;
+  // Node-reported health attributes.
+  map<string, string> health_attributes = 9;
+}
+
+// Controller-side timing configuration used when evaluating heartbeats.
+message ClusterTimingConfig {
+  google.protobuf.Duration heartbeat_interval = 1;
+  google.protobuf.Duration heartbeat_timeout = 2;
+  google.protobuf.Duration suspect_grace_period = 3;
+  google.protobuf.Duration lost_grace_period = 4;
+}
+
+message JoinClusterRequest {
+  string node_id = 1;
+  string node_name = 2;
+  string grpc_endpoint = 3;
+  uint32 configured_memory_bytes = 4;
+  map<string, string> labels = 5;
+  uint64 boot_generation = 6;
+}
+
+message JoinClusterResponse {
+  bool accepted = 1;
+  string message = 2;
+  ControllerLease controller_lease = 3;
+  ClusterMember member = 4;
+  uint64 cluster_revision = 5;
+}
+
+message LeaveClusterRequest {
+  string node_id = 1;
+  uint64 boot_generation = 2;
+}
+
+message LeaveClusterResponse {
+  bool accepted = 1;
+  string message = 2;
+  uint64 cluster_revision = 3;
+}
+
+message HeartbeatRequest {
+  NodeHeartbeat heartbeat = 1;
+}
+
+message HeartbeatResponse {
+  bool accepted = 1;
+  string message = 2;
+  uint64 current_controller_term = 3;
+  uint64 current_cluster_revision = 4;
+  NodeState desired_node_state = 5;
+  bool refresh_membership = 6;
+}
+
+message ReportNodeInventoryRequest {
+  string node_id = 1;
+  uint64 boot_generation = 2;
+  uint32 configured_memory_bytes = 3;
+  map<string, string> labels = 4;
+  repeated string running_services = 5;
+}
+
+message ReportNodeInventoryResponse {
+  bool accepted = 1;
+  string message = 2;
+  uint64 current_controller_term = 3;
+  uint64 current_cluster_revision = 4;
+}
+
+message ClusterEvent {
+  uint64 cluster_revision = 1;
+  ControllerLease controller_lease = 2;
+
+  oneof event {
+    ClusterMemberAddedEvent member_added = 3;
+    ClusterMemberUpdatedEvent member_updated = 4;
+    ClusterMemberRemovedEvent member_removed = 5;
+    ControllerLeaseChangedEvent controller_lease_changed = 6;
+    ClusterStateChangedEvent cluster_state_changed = 7;
+  }
+}
+
+message ClusterMemberAddedEvent {
+  ClusterMember member = 1;
+}
+
+message ClusterMemberUpdatedEvent {
+  ClusterMember member = 1;
+  NodeState previous_state = 2;
+}
+
+message ClusterMemberRemovedEvent {
+  string node_id = 1;
+}
+
+message ControllerLeaseChangedEvent {
+  ControllerLease previous_lease = 1;
+  ControllerLease current_lease = 2;
+}
+
+message ClusterStateChangedEvent {
+  string reason = 1;
+}
+
+message GetClusterViewRequest {}
+
+message GetClusterViewResponse {
+  ClusterView cluster_view = 1;
+}
+
+message ClusterView {
+  uint64 cluster_revision = 1;
+  ControllerLease controller_lease = 2;
+  repeated ClusterMember members = 3;
+  ClusterTimingConfig timing_config = 4;
+}
+
+message GetNodeRequest {
+  string node_id = 1;
+}
+
+message GetNodeResponse {
+  ClusterMember member = 1;
+  NodeHeartbeat last_heartbeat = 2;
+}
+
+message WatchClusterRequest {
+  string node_id = 1;
+}
+
+message WatchClusterResponse {
+  ClusterEvent event = 1;
+}
+
+message RegisterNodeRequest {
+  ClusterMember member = 1;
+}
+
+message RegisterNodeResponse {
+  bool accepted = 1;
+  ClusterMember member = 2;
+  string message = 3;
+  uint64 cluster_revision = 4;
+}
+
+message DrainNodeRequest {
+  string node_id = 1;
+  string reason = 2;
+}
+
+message DrainNodeResponse {
+  bool accepted = 1;
+  string message = 2;
+  uint64 cluster_revision = 3;
+}
+
+message UndrainNodeRequest {
+  string node_id = 1;
+}
+
+message UndrainNodeResponse {
+  bool accepted = 1;
+  string message = 2;
+  uint64 cluster_revision = 3;
+}
+
+message RemoveNodeRequest {
+  string node_id = 1;
+  string reason = 2;
+}
+
+message RemoveNodeResponse {
+  bool accepted = 1;
+  string message = 2;
+  uint64 cluster_revision = 3;
+}
+
+service ClusterMembershipService {
+  rpc JoinCluster(JoinClusterRequest) returns (JoinClusterResponse);
+  rpc LeaveCluster(LeaveClusterRequest) returns (LeaveClusterResponse);
+  rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
+  rpc ReportNodeInventory(ReportNodeInventoryRequest) returns (ReportNodeInventoryResponse);
+}
+
+service ClusterQueryService {
+  rpc GetClusterView(GetClusterViewRequest) returns (GetClusterViewResponse);
+  rpc GetNode(GetNodeRequest) returns (GetNodeResponse);
+  rpc WatchCluster(WatchClusterRequest) returns (stream WatchClusterResponse);
+}
+
+service ClusterAdminService {
+  rpc RegisterNode(RegisterNodeRequest) returns (RegisterNodeResponse);
+  rpc DrainNode(DrainNodeRequest) returns (DrainNodeResponse);
+  rpc UndrainNode(UndrainNodeRequest) returns (UndrainNodeResponse);
+  rpc RemoveNode(RemoveNodeRequest) returns (RemoveNodeResponse);
+}

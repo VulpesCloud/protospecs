@@ -28,5 +28,5 @@ message TaskDefinition {
   repeated string jvm_args = 16;
   repeated string env_vars = 17;
   bool fallback = 18;
-  bool autoStart = 19;
+  bool auto_start = 19;
 }
