@@ -5,8 +5,6 @@ package vulpescloud.node.v1;
 option java_multiple_files = true;
 option java_package = "de.vulpescloud.proto.node.v1";
 
-// Deprecated compatibility contract. The authoritative API is now
-// vulpescloud.cluster.v2 and this service must not be used for new work.
 enum NodeStates {
   NODE_STATES_OFFLINE_UNSPECIFIED = 0;
   NODE_STATES_BOOTING = 1;
@@ -16,21 +14,18 @@ enum NodeStates {
 }
 
 message Node {
-  reserved 7, 8, 9;
-  reserved "head";
-  reserved "boot_timestamp";
-  reserved "attributes";
   string name = 1;
   string uuid = 2;
   string grpc_address = 3;
   int32 grpc_port = 4;
   NodeStates state = 5;
   int32 max_memory = 6;
+  bool head = 7;
+  int64 boot_timestamp = 8;
+  map<string, string> attributes = 9;
 }
 
 message NodeSnapshot {
-  reserved 7, 9;
-  reserved "attributes";
   string name = 1;
   string uuid = 2;
   NodeStates state = 3;
@@ -38,6 +33,7 @@ message NodeSnapshot {
   double cpu_usage = 5;
   int32 online_players = 6;
   int64 timestamp = 8;
+  map<string, string> attributes = 9;
 }
 
 message GetAllNodesRequest {}
