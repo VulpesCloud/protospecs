@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package vulpescloud.cluster.v2;
-
-option java_multiple_files = true;
-option java_package = "de.vulpescloud.proto.cluster.v2";
-
-// Compatibility wrapper so downstream code can still import the cluster
-// event definitions from a dedicated file if desired.
