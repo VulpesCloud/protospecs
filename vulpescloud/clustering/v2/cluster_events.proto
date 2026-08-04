@@ -5,6 +5,8 @@ package vulpescloud.cluster.v2;
 option java_multiple_files = true;
 option java_package = "de.vulpescloud.proto.cluster.v2";
 
+import "vulpescloud/clustering/v2/cluster_types.proto";
+
 message NodeStateChangeEvent {
     NodeSnapshot snapshot = 1;
     NodeState old_state = 2;
