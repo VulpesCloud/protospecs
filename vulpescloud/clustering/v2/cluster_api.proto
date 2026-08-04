@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package vulpescloud.cluster.v2;
+
+option java_multiple_files = true;
+option java_package = "de.vulpescloud.proto.cluster.v2";
+
+message GetAllNodesRequest {}
+
+message GetAllNodesResponse {
+  repeated Node nodes = 1;
+}
+
+message GetNodeByNameRequest {
+  string name = 1;
+}
+
+message GetNodeByNameResponse {
+  Node node = 1;
+}
+
+message GetNodeSnapshotRequest {
+  string name = 1;
+}
+
+message GetNodeSnapshotResponse {
+  NodeSnapshot snapshot = 1;
+}
+
+message PlayerCommandSource {
+  string playerName = 1;
+  string playerUuid = 2;
+  string playerProxyServiceName = 3;
+  string playerServerServiceName = 4;
+}
+
+message UserCommandSource {
+  string username = 1;
+  map<string, string> extraData = 2;
+}
+
+message ExecuteCommandRequest {
+  oneof source {
+    PlayerCommandSource playerSource = 1;
+    UserCommandSource userSource = 2;
+  }
+  string command = 3;
+}
+
+message ExecuteCommandResponse {
+  bool success = 1;
+  repeated string output = 2;
+}
+
+message CommandTabCompleteRequest {
+  oneof source {
+    PlayerCommandSource playerSource = 1;
+    UserCommandSource userSource = 2;
+  }
+  string command = 3;
+}
+
+message CommandTabCompleteResponse {
+  repeated string suggestions = 1;
+}
+
+message PingRequest {
+
+}
+
+message PingResponse {
+  
+}
+
+service ClusterAPIService {
+    rpc GetAllNodes(GetAllNodesRequest) returns (GetAllNodesResponse);
+    rpc GetNodeByName(GetNodeByNameRequest) returns (GetNodeByNameResponse);
+    rpc GetNodeSnapshot(GetNodeSnapshotRequest) returns (GetNodeSnapshotResponse);
+    rpc CommandTabComplete(CommandTabCompleteRequest) returns (CommandTabCompleteResponse);
+    rpc ExecuteCommand(ExecuteCommandRequest) returns (ExecuteCommandResponse);
+    rpc Ping(PingRequest) returns (PingResponse);
+}

@@ -122,6 +122,7 @@ message AuthenticateNodeResponse {
 }
 
 service ClusterAPIService {
+  option deprecated = true;
   rpc GetAllNodes(GetAllNodesRequest) returns (GetAllNodesResponse);
   rpc GetNodeByName(GetNodeByNameRequest) returns (GetNodeByNameResponse);
   rpc GetNodeSnapshot(GetNodeSnapshotRequest) returns (GetNodeSnapshotResponse);

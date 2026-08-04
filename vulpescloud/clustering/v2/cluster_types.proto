@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package vulpescloud.cluster.v2;
+
+option java_multiple_files = true;
+option java_package = "de.vulpescloud.proto.cluster.v2";
+
+enum NodeState {
+  NODE_STATES_OFFLINE_UNSPECIFIED = 0;
+  NODE_STATES_BOOTING = 1;
+  NODE_STATES_ONLINE = 2;
+  NODE_STATES_DRAINING = 3;
+  NODE_STATES_UNKNOWN = 4;
+}
+
+message Node {
+  string name = 1;
+  string uuid = 2;
+  string grpc_address = 3;
+  int32 grpc_port = 4;
+}
+
+message NodeSnapshot {
+  string name = 1;
+  string uuid = 2;
+  NodeState state = 3;
+  int64 node_proccess_used_memory = 4;
+  int64 services_used_memory = 5;
+  int64 services_max_memory = 6;
+  double system_cpu_usage = 7;
+  int64 online_players = 8;
+  int64 timestamp = 9;
+  map<string, string> attributes = 10;
+  int64 services = 11;
+}
