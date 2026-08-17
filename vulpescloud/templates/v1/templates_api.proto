@@ -134,8 +134,17 @@ message ListRegisteredStoragesResponse {
   repeated TemplateStorage storage = 1;
 }
 
+message ListLocalRegisteredStoragesRequest {
+  optional TemplateStorageType type = 1;
+}
+
+message ListLocalRegisteredStoragesResponse {
+  repeated TemplateStorage storage = 1;
+}
+
 service TemplateService {
   rpc ListRegisteredStorages(ListRegisteredStoragesRequest) returns (ListRegisteredStoragesResponse);
+  rpc ListLocalRegisteredStorages(ListLocalRegisteredStoragesRequest) returns (ListLocalRegisteredStoragesResponse);
 
   rpc CreateTemplate(CreateTemplateRequest) returns (CreateTemplateResponse);
   rpc DeleteTemplate(DeleteTemplateRequest) returns (DeleteTemplateResponse);
