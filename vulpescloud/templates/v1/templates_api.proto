@@ -33,7 +33,7 @@ message GetTemplateResponse {
 }
 
 message ListTemplatesRequest {
-  TemplateLocation location = 1;
+  optional TemplateLocation location = 1;
 }
 
 message ListTemplatesResponse {
@@ -126,7 +126,17 @@ message ListDirectoryResponse {
   repeated TemplateDirectoryEntry entries = 1;
 }
 
+message ListRegisteredStoragesRequest {
+  optional TemplateStorageType type = 1;
+}
+
+message ListRegisteredStoragesResponse {
+  repeated TemplateStorage storage = 1;
+}
+
 service TemplateService {
+  rpc ListRegisteredStorages(ListRegisteredStoragesRequest) returns (ListRegisteredStoragesResponse);
+
   rpc CreateTemplate(CreateTemplateRequest) returns (CreateTemplateResponse);
   rpc DeleteTemplate(DeleteTemplateRequest) returns (DeleteTemplateResponse);
   rpc GetTemplate(GetTemplateRequest) returns (GetTemplateResponse);
