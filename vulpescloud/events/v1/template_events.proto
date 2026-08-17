@@ -1,0 +1,27 @@
+syntax = "proto3";
+package vulpescloud.events.v1;
+
+option java_multiple_files = true;
+option java_package = "de.vulpescloud.proto.events.v1";
+
+import "vulpescloud/templates/v1/templates_types.proto";
+
+message TemplateCreatedEvent {
+    vulpescloud.templates.v1.TemplateDefinition template = 1;
+    int64 timestamp = 2;
+}
+
+message TemplateDeletedEvent {
+    vulpescloud.templates.v1.TemplateReference template = 1;
+    int64 timestamp = 2;
+}
+
+message TemplateUpdatedEvent {
+    vulpescloud.templates.v1.TemplateDefinition old_template = 1;
+    vulpescloud.templates.v1.TemplateDefinition new_template = 2;
+    int64 timestamp = 2;
+}
+
+message TemplateStorageRegisteredEvent {
+    vulpescloud.templates.v1.TemplateStorage storage = 1;
+}
