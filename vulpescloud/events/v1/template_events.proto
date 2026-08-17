@@ -19,7 +19,7 @@ message TemplateDeletedEvent {
 message TemplateUpdatedEvent {
     vulpescloud.templates.v1.TemplateDefinition old_template = 1;
     vulpescloud.templates.v1.TemplateDefinition new_template = 2;
-    int64 timestamp = 2;
+    int64 timestamp = 3;
 }
 
 message TemplateStorageRegisteredEvent {
