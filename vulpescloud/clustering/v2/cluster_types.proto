@@ -23,13 +23,42 @@ message Node {
 message NodeSnapshot {
   string name = 1;
   string uuid = 2;
+
   NodeState state = 3;
-  int64 node_proccess_used_memory = 4;
-  int64 services_used_memory = 5;
-  int64 services_max_memory = 6;
-  double system_cpu_usage = 7;
-  int64 online_players = 8;
-  int64 timestamp = 9;
-  map<string, string> attributes = 10;
-  int64 services = 11;
+
+  int64 players_on_node = 4;
+
+  int64 timestamp = 5;
+  int64 startup_timestamp = 6;
+
+  SystemSnapshot system = 7;
+  ServiceSnapshot services = 8;
+
+  map<string, string> attributes = 9;
+}
+
+message SystemSnapshot {
+  CpuSnapshot cpu = 1;
+  MemorySnapshot memory = 2;
+}
+
+message CpuSnapshot {
+  int32 cores = 1;
+
+  double usage = 2;
+}
+
+message MemorySnapshot {
+  int64 total = 1;
+  int64 used = 2;
+  int64 available = 3;
+}
+
+message ServiceSnapshot {
+  int32 count = 1;
+
+  int64 memory_limit = 2;
+  int64 memory_used = 3;
+  int64 memory_reserved = 4;
+  int64 memory_available = 5;
 }
