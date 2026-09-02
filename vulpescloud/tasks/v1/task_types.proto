@@ -21,7 +21,7 @@ message TaskDefinition {
   bool maintenance = 9;
   bool copy_template_to_static = 10;
   string service_factory_name = 11;
-  string preferred_node = 12;
+  repeated string preferred_nodes = 12;
   uint32 max_players = 13;
   vulpescloud.node.v1.ServerSoftware server_software = 14;
   map<string, string> attributes = 15;
