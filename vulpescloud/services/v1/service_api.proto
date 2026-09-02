@@ -143,21 +143,35 @@ message GetLatestServiceSnapshotResponse {
   vulpescloud.services.v1.ServiceSnapshot snapshot = 1;
 }
 
+message GetServicesOfNodeRequest {
+  string node_name = 1;
+}
+
+message GetServicesOfNodeResponse {
+  repeated vulpescloud.services.v1.ServiceDefinition services = 1;
+}
+
 service ServiceAPIService {
   rpc StartService(StartServiceRequest) returns (StartServiceResponse);
   rpc RestartService(RestartServiceRequest) returns (RestartServiceResponse);
   rpc StopService(StopServiceRequest) returns (StopServiceResponse);
   rpc DeleteService(DeleteServiceRequest) returns (DeleteServiceResponse);
+  rpc SendCommand(SendCommandRequest) returns (SendCommandResponse);
+
   rpc GetAllServices(GetAllServicesRequest) returns (GetAllServicesResponse);
   rpc GetByTask(GetByTaskRequest) returns (GetByTaskResponse);
   rpc GetByUuid(GetByUuidRequest) returns (GetByUuidResponse);
   rpc GetByName(GetByNameRequest) returns (GetByNameResponse);
   rpc GetBySoftwareType(GetBySoftwareTypeRequest) returns (GetBySoftwareTypeResponse);
-  rpc SendCommand(SendCommandRequest) returns (SendCommandResponse);
+
+  rpc GetServicesOfNode(GetServicesOfNodeRequest) returns (GetServicesOfNodeResponse);
+
   rpc UpdateServiceMeta(UpdateServiceMetaRequest) returns (UpdateServiceMetaResponse);
   rpc UpdatePlayerCount(UpdatePlayerCountRequest) returns (UpdatePlayerCountResponse);
+  rpc UpdateServiceSnapshot(UpdateServiceSnapshotRequest) returns (UpdateServiceSnapshotResponse);
+
   rpc GetServiceLogs(GetServiceLogsRequest) returns (GetServiceLogsResponse);
   rpc StreamServiceLogs(StreamServiceLogsRequest) returns (stream StreamServiceLogsResponse);
-  rpc UpdateServiceSnapshot(UpdateServiceSnapshotRequest) returns (UpdateServiceSnapshotResponse);
+  
   rpc GetLatestServiceSnapshot(GetLatestServiceSnapshotRequest) returns (GetLatestServiceSnapshotResponse);
 }
