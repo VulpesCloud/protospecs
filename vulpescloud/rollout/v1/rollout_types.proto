@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package vulpescloud.rollout.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "vulpescloud/tasks/v1/task_types.proto";
+
+option java_multiple_files = true;
+option java_package = "de.vulpescloud.proto.rollout.v1";
+
+enum RolloutStrategy {
+  ROLLOUT_STRATEGY_UNSPECIFIED = 0;
+  ROLLOUT_STRATEGY_ROLLING_REPLACE = 1;
+  ROLLOUT_STRATEGY_PASSIVE_DRAIN = 2;
+  ROLLOUT_STRATEGY_IMMEDIATE = 3;
+}
+
+enum RolloutStatus {
+  ROLLOUT_STATUS_UNSPECIFIED = 0;
+  ROLLOUT_STATUS_PENDING = 1;
+  ROLLOUT_STATUS_IN_PROGRESS = 2;
+  ROLLOUT_STATUS_DRAINING = 3;
+  ROLLOUT_STATUS_COMPLETED = 4;
+  ROLLOUT_STATUS_FAILED = 5;
+  ROLLOUT_STATUS_CANCELLED = 6;
+}
+
+message RolloutOptions {
+  RolloutStrategy strategy = 1;
+  
+  // Number of new services to start per batch (minimum 1, default 1)
+  // Not applicable to ROLLOUT_STRATEGY_IMMEDIATE
+  optional int32 batch_size = 2;
+  
+  // Maximum allowed players on an old service before forcing shutdown during drain (default: 0)
+  // Only Applicable to ROLLOUT_STRATEGY_PASSIVE_DRAIN
+  optional int32 drain_player_threshold = 3;
+  
+  // Timeout to wait for a service to drain players before forcing shutdown (0 = indefinite)
+  // Only Applicable to ROLLOUT_STRATEGY_PASSIVE_DRAIN
+  optional google.protobuf.Duration drain_timeout = 4;
+  
+  // Timeout to wait for a new service to reach RUNNING / Healthy state
+  // Not applicable to ROLLOUT_STRATEGY_IMMEDIATE
+  optional google.protobuf.Duration readiness_timeout = 5;
+    
+  // If true, ignores Task.maxOnlineServices constraint during rollout surge
+  bool bypass_max_service_count = 6;
+  
+  // If true, automatically transfers remaining players to new services when drain_timeout expires
+  bool fallback_remaining_players = 7;
+}
+
+message RolloutProgress {
+  string rollout_id = 1;
+  string task_name = 2;
+  RolloutStatus status = 3;
+  RolloutOptions options = 4;
+  
+  int32 total_services_to_replace = 5;
+  int32 services_started = 6;
+  int32 services_ready = 7;
+  int32 services_stopped = 8;
+  
+  repeated string pending_stop_service_names = 9;
+  repeated string new_service_names = 10;
+  
+  google.protobuf.Timestamp started_at = 11;
+  google.protobuf.Timestamp completed_at = 12;
+  string failure_reason = 13;
+}

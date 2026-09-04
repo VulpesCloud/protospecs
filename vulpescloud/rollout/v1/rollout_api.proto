@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package vulpescloud.rollout.v1;
+
+import "vulpescloud/rollout/v1/rollout_types.proto";
+
+option java_multiple_files = true;
+option java_package = "de.vulpescloud.proto.rollout.v1";
+
+message StartRolloutRequest {
+  string task_name = 1;
+  vulpescloud.rollout.v1.RolloutOptions options = 2;
+}
+
+message StartRolloutResponse {
+  vulpescloud.rollout.v1.RolloutProgress rollout = 1;
+}
+
+message GetRolloutStatusRequest {
+  string rollout_id = 1;
+  string task_name = 2; // Optional filter if rollout_id is empty
+}
+
+message GetRolloutStatusResponse {
+  vulpescloud.rollout.v1.RolloutProgress rollout = 1;
+}
+
+message ListActiveRolloutsRequest {}
+
+message ListActiveRolloutsResponse {
+  repeated vulpescloud.rollout.v1.RolloutProgress rollouts = 1;
+}
+
+message CancelRolloutRequest {
+  string rollout_id = 1;
+}
+
+message CancelRolloutResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message StreamRolloutProgressRequest {
+  string rollout_id = 1;
+}
+
+// Rollout API Service Definition for CLI, Dashboard, and Node orchestration
+service RolloutAPIService {
+  rpc StartRollout (StartRolloutRequest) returns (StartRolloutResponse);
+  rpc GetRolloutStatus (GetRolloutStatusRequest) returns (GetRolloutStatusResponse);
+  rpc ListActiveRollouts (ListActiveRolloutsRequest) returns (ListActiveRolloutsResponse);
+  rpc CancelRollout (CancelRolloutRequest) returns (CancelRolloutResponse);
+  rpc StreamRolloutProgress (StreamRolloutProgressRequest) returns (stream RolloutProgress);
+}
