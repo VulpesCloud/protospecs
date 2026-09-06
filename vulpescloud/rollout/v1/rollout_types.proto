@@ -69,4 +69,7 @@ message RolloutProgress {
   google.protobuf.Timestamp started_at = 11;
   google.protobuf.Timestamp completed_at = 12;
   string failure_reason = 13;
+
+  int32 current_batch_number = 14;
+  int32 total_batches = 15;
 }

@@ -1,0 +1,60 @@
+syntax = "proto3";
+package vulpescloud.events.v1;
+
+option java_multiple_files = true;
+option java_package = "de.vulpescloud.proto.events.v1";
+
+import "google/protobuf/duration.proto";
+import "vulpescloud/tasks/v1/task_types.proto";
+import "vulpescloud/services/v1/service_types.proto";
+import "vulpescloud/rollout/v1/rollout_types.proto";
+
+message RolloutStartedEvent {
+  vulpescloud.rollout.v1.RolloutProgress progress = 1;
+  vulpescloud.tasks.v1.TaskDefinition task = 2;
+}
+
+message RolloutBatchProgressEvent {
+  string rollout_id = 1;
+
+  vulpescloud.tasks.v1.TaskDefinition task = 2;
+
+  repeated vulpescloud.services.v1.ServiceDefinition new_services = 3;
+
+  repeated vulpescloud.services.v1.ServiceDefinition old_services = 4;
+
+  int32 services_started = 5;
+  int32 services_ready = 6;
+  int32 services_stopped = 7;
+  int32 total_services_to_replace = 8;
+}
+
+message RolloutDrainingEvent {
+  string rollout_id = 1;
+
+  vulpescloud.tasks.v1.TaskDefinition task = 2;
+
+  repeated vulpescloud.services.v1.ServiceDefinition draining_services = 3;
+
+  optional int32 drain_player_threshold = 4;
+  optional google.protobuf.Duration drain_timeout = 5;
+}
+
+message RolloutCompletedEvent {
+  vulpescloud.rollout.v1.RolloutProgress progress = 1;
+  vulpescloud.tasks.v1.TaskDefinition task = 2;
+}
+
+message RolloutFailedEvent {
+  vulpescloud.rollout.v1.RolloutProgress progress = 1;
+  vulpescloud.tasks.v1.TaskDefinition task = 2;
+
+  string failure_reason = 3;
+}
+
+message RolloutCancelledEvent {
+  vulpescloud.rollout.v1.RolloutProgress progress = 1;
+  vulpescloud.tasks.v1.TaskDefinition task = 2;
+
+  repeated vulpescloud.services.v1.ServiceDefinition terminated_services = 3;
+}
