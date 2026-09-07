@@ -13,7 +13,9 @@ message StartRolloutRequest {
 }
 
 message StartRolloutResponse {
-  vulpescloud.rollout.v1.RolloutProgress rollout = 1;
+  bool success = 1;
+  string error = 2;
+  RolloutProgress rollout = 3;
 }
 
 message GetRolloutStatusRequest {

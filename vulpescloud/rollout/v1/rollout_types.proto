@@ -46,10 +46,10 @@ message RolloutOptions {
   optional google.protobuf.Duration readiness_timeout = 5;
     
   // If true, ignores Task.maxOnlineServices constraint during rollout surge
-  bool bypass_max_service_count = 6;
+  optional bool bypass_max_service_count = 6;
   
   // If true, automatically transfers remaining players to new services when drain_timeout expires
-  bool fallback_remaining_players = 7;
+  optional bool fallback_remaining_players = 7;
 }
 
 message RolloutProgress {
