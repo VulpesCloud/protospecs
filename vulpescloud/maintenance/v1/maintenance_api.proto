@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package vulpescloud.maintenance.v1;
+
+option java_multiple_files = true;
+option java_package = "de.vulpescloud.proto.maintenance.v1";
+
+service NodeMaintenanceAPIService {
+  rpc SetNodeMaintenance(SetNodeMaintenanceRequest) returns (SetNodeMaintenanceResponse);
+  rpc ListNodeMaintenance(ListNodeMaintenanceRequest) returns (ListNodeMaintenanceResponse);
+}
+
+message NodeMaintenanceState {
+  string node_name = 1;
+  bool enabled = 2;
+}
+
+message SetNodeMaintenanceRequest {
+  string node_name = 1;
+  bool enabled = 2;
+}
+
+message SetNodeMaintenanceResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message ListNodeMaintenanceRequest {}
+
+message ListNodeMaintenanceResponse {
+  repeated NodeMaintenanceState nodes = 1;
+}

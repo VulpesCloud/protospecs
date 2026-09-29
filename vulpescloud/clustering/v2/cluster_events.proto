@@ -13,3 +13,31 @@ message NodeStateChangeEvent {
     NodeState new_state = 3;
 }
  
+message NodeDrainStartedEvent {
+  NodeSnapshot snapshot = 1;
+  NodeDrainStrategy strategy = 2;
+}
+
+message NodeDrainProgressEvent {
+  NodeSnapshot snapshot = 1;
+  int32 services_remaining = 2;
+  int32 players_remaining = 3;
+}
+
+message NodeDrainCompletedEvent {
+  NodeSnapshot snapshot = 1;
+}
+
+message NodeDrainCancelledEvent {
+  NodeSnapshot snapshot = 1;
+}
+
+message NodeDrainFailedEvent {
+  NodeSnapshot snapshot = 1;
+  string reason = 2;
+}
+
+message NodeMaintenanceChangedEvent {
+  NodeSnapshot snapshot = 1;
+  bool enabled = 2;
+}

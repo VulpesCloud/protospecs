@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package vulpescloud.draining.v1;
+
+option java_multiple_files = true;
+option java_package = "de.vulpescloud.proto.draining.v1";
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+import "vulpescloud/clustering/v2/cluster_types.proto";
+
+enum NodeDrainStrategy {
+  NODE_DRAIN_STRATEGY_UNSPECIFIED = 0; // treated as PASSIVE
+  NODE_DRAIN_STRATEGY_PASSIVE = 1;
+  NODE_DRAIN_STRATEGY_IMMEDIATE = 2;
+}
+
+enum NodeDrainStatus {
+  NODE_DRAIN_STATUS_UNSPECIFIED = 0;
+  NODE_DRAIN_STATUS_PENDING = 1;
+  NODE_DRAIN_STATUS_IN_PROGRESS = 2;
+  NODE_DRAIN_STATUS_COMPLETED = 3;
+  NODE_DRAIN_STATUS_CANCELLED = 4;
+  NODE_DRAIN_STATUS_FAILED = 5;
+}
+
+message NodeDrainOptions {
+  optional NodeDrainStrategy strategy = 1;
+  optional google.protobuf.Duration timeout = 2;
+  optional int32 player_threshold = 3;
+  optional bool force = 4; // allow draining the last ONLINE node
+}
+
+message NodeDrainProgress {
+  string node_name = 1;
+  NodeDrainStrategy strategy = 2;
+  NodeDrainStatus status = 3;
+  google.protobuf.Timestamp started_at = 4;
+  google.protobuf.Timestamp deadline = 5;
+  optional google.protobuf.Timestamp completed_at = 6;
+  int32 player_threshold = 7;
+  int32 services_total = 8;
+  int32 services_stopped = 9;
+  int32 services_remaining = 10;
+  int32 players_remaining = 11;
+  optional string failure_reason = 12;
+}
+
+service NodeDrainAPIService {
+  rpc StartNodeDrain(StartNodeDrainRequest) returns (StartNodeDrainResponse);
+  rpc CancelNodeDrain(CancelNodeDrainRequest) returns (CancelNodeDrainResponse);
+  rpc GetNodeDrainStatus(GetNodeDrainStatusRequest) returns (GetNodeDrainStatusResponse);
+  rpc ListActiveNodeDrains(ListActiveNodeDrainsRequest) returns (ListActiveNodeDrainsResponse);
+  rpc StreamNodeDrainProgress(StreamNodeDrainProgressRequest) returns (stream NodeDrainProgress);
+}
+
+message StartNodeDrainRequest {
+  string node_name = 1;
+  NodeDrainOptions options = 2;
+}
+
+message StartNodeDrainResponse {
+  bool success = 1;
+  string error = 2;
+  optional NodeDrainProgress drain = 3; // set on success
+}
+
+message CancelNodeDrainRequest {
+  string node_name = 1;
+}
+
+message CancelNodeDrainResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetNodeDrainStatusRequest {
+  string node_name = 1;
+}
+
+message GetNodeDrainStatusResponse {
+  NodeDrainProgress drain = 1; // active drain, or the most recent one; NOT_FOUND if none
+}
+
+message ListActiveNodeDrainsRequest {}
+
+message ListActiveNodeDrainsResponse {
+  repeated NodeDrainProgress drains = 1;
+}
+
+message StreamNodeDrainProgressRequest {
+  string node_name = 1;
+}
