@@ -6,6 +6,7 @@ option java_multiple_files = true;
 option java_package = "de.vulpescloud.proto.cluster.v2";
 
 import "vulpescloud/clustering/v2/cluster_types.proto";
+import "vulpescloud/draining/v1/draining_api.proto";
 
 message NodeStateChangeEvent {
     NodeSnapshot snapshot = 1;
@@ -15,7 +16,7 @@ message NodeStateChangeEvent {
  
 message NodeDrainStartedEvent {
   NodeSnapshot snapshot = 1;
-  NodeDrainStrategy strategy = 2;
+  vulpescloud.draining.v1.NodeDrainStrategy strategy = 2;
 }
 
 message NodeDrainProgressEvent {
