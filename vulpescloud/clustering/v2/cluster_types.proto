@@ -20,7 +20,7 @@ message NodeModule {
   string version = 4;
   string website = 5;
   bool copyToServices = 6;
-  string servicePlatforms = 7;
+  repeated string servicePlatforms = 7;
   bool neededOnAllNodes = 8;
   NodeModuleState state = 9;
 }
