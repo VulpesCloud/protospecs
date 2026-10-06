@@ -13,6 +13,25 @@ enum NodeState {
   NODE_STATES_UNKNOWN = 4;
 }
 
+message NodeModule {
+  string name = 1;
+  repeated string authors = 2;
+  string description = 3;
+  string version = 4;
+  string website = 5;
+  bool copyToServices = 6;
+  string servicePlatforms = 7;
+  bool neededOnAllNodes = 8;
+  NodeModuleState state = 9;
+}
+
+enum NodeModuleState {
+  NODE_MODULE_STATE_UNSPECIFIED = 0;
+  NODE_MODULE_STATE_UNLOADED = 1;
+  NODE_MODULE_STATE_LOADED = 2;
+  NODE_MODULE_STATE_ENABLED = 3;
+}
+
 message Node {
   string name = 1;
   string uuid = 2;

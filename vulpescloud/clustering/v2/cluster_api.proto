@@ -74,6 +74,14 @@ message PingResponse {
   
 }
 
+message GetModulesOfNodeRequest {
+  string nodeName = 1;
+}
+
+message GetModulesOfNodeResponse {
+  repeated vulpescloud.cluster.v2.NodeModule modules = 1;
+}
+
 service ClusterAPIService {
     rpc GetAllNodes(GetAllNodesRequest) returns (GetAllNodesResponse);
     rpc GetNodeByName(GetNodeByNameRequest) returns (GetNodeByNameResponse);
@@ -81,4 +89,5 @@ service ClusterAPIService {
     rpc CommandTabComplete(CommandTabCompleteRequest) returns (CommandTabCompleteResponse);
     rpc ExecuteCommand(ExecuteCommandRequest) returns (ExecuteCommandResponse);
     rpc Ping(PingRequest) returns (PingResponse);
+    rpc GetModulesOfNode(GetModulesOfNodeRequest) returns (GetModulesOfNodeResponse);
 }
