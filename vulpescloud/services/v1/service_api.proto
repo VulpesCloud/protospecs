@@ -4,11 +4,9 @@ package vulpescloud.services.v1;
 
 import "vulpescloud/node/v1/server_software.proto";
 import "vulpescloud/services/v1/service_types.proto";
-import "vulpescloud/tasks/v1/task_types.proto";
 
 option java_multiple_files = true;
 option java_package = "de.vulpescloud.proto.services.v1";
-option go_package = "buf.build/gen/go/vulpescloud/protospecs/protocolbuffers/go/vulpescloud/services/v1/servicesapi;servicesapi";
 
 message GetServiceLogsRequest {
   vulpescloud.services.v1.ServiceDefinition service = 1;
@@ -70,7 +68,7 @@ message GetAllServicesResponse {
 }
 
 message GetByTaskRequest {
-  vulpescloud.tasks.v1.TaskDefinition task = 1;
+  string task_name = 1;
 }
 
 message GetByTaskResponse {

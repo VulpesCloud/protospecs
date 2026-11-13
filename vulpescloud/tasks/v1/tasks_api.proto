@@ -7,7 +7,6 @@ import "vulpescloud/services/v1/service_types.proto";
 
 option java_multiple_files = true;
 option java_package = "de.vulpescloud.proto.tasks.v1";
-option go_package = "buf.build/gen/go/vulpescloud/protospecs/protocolbuffers/go/vulpescloud/tasks/v1/tasksapi;tasksapi";
 
 message CreateTaskRequest {
   vulpescloud.tasks.v1.TaskDefinition task = 1;
