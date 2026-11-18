@@ -28,14 +28,14 @@ message TemplateStorageRegisteredEvent {
 
 message TemplateJobStartedEvent {
   string jobId = 1;
-  TemplateJobType type = 2;
+  vulpescloud.templates.v1.TemplateJobType type = 2;
   string sourceName = 3;
   string destinationName = 4;
 }
 
 message TemplateJobCompletedEvent {
   string jobId = 1;
-  TemplateJobType type = 2;
+  vulpescloud.templates.v1.TemplateJobType type = 2;
   string sourceName = 3;
   string destinationName = 4;
   int32 filesCopied = 5;
@@ -46,7 +46,7 @@ message TemplateJobCompletedEvent {
 
 message TemplateJobFailedEvent {
   string jobId = 1;
-  TemplateJobType type = 2;
+  vulpescloud.templates.v1.TemplateJobType type = 2;
   string sourceName = 3;
   string destinationName = 4;
   string reason = 5;
@@ -54,7 +54,7 @@ message TemplateJobFailedEvent {
 
 message TemplateJobCancelledEvent {
   string jobId = 1;
-  TemplateJobType type = 2;
+  vulpescloud.templates.v1.TemplateJobType type = 2;
   string sourceName = 3;
   string destinationName = 4;
 }
