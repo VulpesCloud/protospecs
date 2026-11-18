@@ -43,21 +43,23 @@ message ListTemplatesResponse {
 message MoveTemplateRequest {
   TemplateReference source = 1;
   TemplateReference destination = 2;
-  bool overwrite = 3;
+  TemplateJobConflictMode conflictMode = 3;
+  TemplateJobExtraFilesMode extraFilesMode = 4;
 }
 
 message MoveTemplateResponse {
-  TemplateOperationResult result = 1;
+  TemplateJobAcceptResponse acceptResult = 1;
 }
 
 message CopyTemplateRequest {
   TemplateReference source = 1;
   TemplateReference destination = 2;
-  bool overwrite = 3;
+  TemplateJobConflictMode conflictMode = 3;
+  TemplateJobExtraFilesMode extraFilesMode = 4;
 }
 
 message CopyTemplateResponse {
-  TemplateOperationResult result = 1;
+  TemplateJobAcceptResponse acceptResult = 1;
 }
 
 message CreateDirectoryRequest {
@@ -153,6 +155,11 @@ service TemplateService {
 
   rpc MoveTemplate(MoveTemplateRequest) returns (MoveTemplateResponse);
   rpc CopyTemplate(CopyTemplateRequest) returns (CopyTemplateResponse);
+
+  rpc GetTemplateJob(GetTemplateJobRequest) returns (TemplateJobProgress);
+  rpc ListActiveTemplateJobs(google.protobuf.Empty) returns (ListActiveTemplateJobsResponse);
+  rpc CancelTemplateJob(CancelTemplateJobRequest) returns (CancelTemplateJobResponse);
+  rpc StreamTemplateJobProgress(GetTemplateJobRequest) returns (stream TemplateJobProgress);
 
   rpc CreateDirectory(CreateDirectoryRequest) returns (CreateDirectoryResponse);
   rpc DeleteDirectory(DeleteDirectoryRequest) returns (DeleteDirectoryResponse);

@@ -55,3 +55,95 @@ message TemplateOperationResult {
   bool success = 1;
   string message = 2;
 }
+
+// --- Job System ---
+
+enum TemplateJobStatus {
+  TEMPLATE_JOB_STATUS_UNSPECIFIED = 0;
+  TEMPLATE_JOB_STATUS_PENDING = 1;
+  TEMPLATE_JOB_STATUS_IN_PROGRESS = 2;
+  TEMPLATE_JOB_STATUS_COMPLETED = 3;
+  TEMPLATE_JOB_STATUS_CANCELLED = 4;
+  TEMPLATE_JOB_STATUS_FAILED = 5;
+}
+
+enum TemplateJobType {
+  TEMPLATE_JOB_TYPE_UNSPECIFIED = 0;
+  TEMPLATE_JOB_TYPE_COPY = 1;
+  TEMPLATE_JOB_TYPE_MOVE = 2;
+}
+
+enum TemplateJobConflictMode {
+  TEMPLATE_JOB_CONFLICT_MODE_UNSPECIFIED = 0;
+  TEMPLATE_JOB_CONFLICT_MODE_DENY = 1;
+  TEMPLATE_JOB_CONFLICT_MODE_SKIP = 2;
+  TEMPLATE_JOB_CONFLICT_MODE_OVERWRITE = 3;
+  TEMPLATE_JOB_CONFLICT_MODE_OVERWRITE_NEWER = 4;
+  TEMPLATE_JOB_CONFLICT_MODE_OVERWRITE_CHANGED = 5;
+}
+
+enum TemplateJobExtraFilesMode {
+  TEMPLATE_JOB_EXTRA_FILES_MODE_UNSPECIFIED = 0;
+  TEMPLATE_JOB_EXTRA_FILES_MODE_KEEP = 1;
+  TEMPLATE_JOB_EXTRA_FILES_MODE_PURGE = 2;
+}
+
+enum TemplateJobAcceptStatus {
+  TEMPLATE_JOB_ACCEPT_STATUS_UNSPECIFIED = 0;
+  TEMPLATE_JOB_ACCEPT_STATUS_ACCEPTED = 1;
+  TEMPLATE_JOB_ACCEPT_STATUS_REJECTED_SOURCE_NOT_FOUND = 2;
+  TEMPLATE_JOB_ACCEPT_STATUS_REJECTED_DESTINATION_EXISTS = 3;
+  TEMPLATE_JOB_ACCEPT_STATUS_REJECTED_FILES_CONFLICT = 4;
+  TEMPLATE_JOB_ACCEPT_STATUS_REJECTED_INVALID_CONFIGURATION = 5;
+}
+
+message TemplateJobProgress {
+  string jobId = 1;
+  TemplateJobType type = 2;
+  TemplateJobStatus status = 3;
+
+  TemplateReference source = 4;
+  TemplateReference destination = 5;
+
+  TemplateJobConflictMode conflictMode = 6;
+  TemplateJobExtraFilesMode extraFilesMode = 7;
+
+  int32 totalFiles = 8;
+  int32 filesProcessed = 9;
+  int64 bytesProcessed = 10;
+  int64 totalBytes = 11;
+  string currentFile = 12;
+
+  int32 filesCopied = 13;
+  int32 filesSkipped = 14;
+  int32 filesOverwritten = 15;
+  int32 filesPurged = 16;
+
+  int64 startedAt = 17;
+  int64 completedAt = 18;
+
+  string failureReason = 19;
+}
+
+message TemplateJobAcceptResponse {
+  TemplateJobAcceptStatus status = 1;
+  string reason = 2;
+  TemplateJobProgress job = 3;
+}
+
+message GetTemplateJobRequest {
+  string jobId = 1;
+}
+
+message ListActiveTemplateJobsResponse {
+  repeated TemplateJobProgress jobs = 1;
+}
+
+message CancelTemplateJobRequest {
+  string jobId = 1;
+}
+
+message CancelTemplateJobResponse {
+  bool success = 1;
+  string message = 2;
+}
