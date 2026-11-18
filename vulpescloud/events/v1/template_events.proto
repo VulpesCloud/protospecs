@@ -25,3 +25,36 @@ message TemplateUpdatedEvent {
 message TemplateStorageRegisteredEvent {
     vulpescloud.templates.v1.TemplateStorage storage = 1;
 }
+
+message TemplateJobStartedEvent {
+  string jobId = 1;
+  TemplateJobType type = 2;
+  string sourceName = 3;
+  string destinationName = 4;
+}
+
+message TemplateJobCompletedEvent {
+  string jobId = 1;
+  TemplateJobType type = 2;
+  string sourceName = 3;
+  string destinationName = 4;
+  int32 filesCopied = 5;
+  int32 filesSkipped = 6;
+  int32 filesOverwritten = 7;
+  int32 filesPurged = 8;
+}
+
+message TemplateJobFailedEvent {
+  string jobId = 1;
+  TemplateJobType type = 2;
+  string sourceName = 3;
+  string destinationName = 4;
+  string reason = 5;
+}
+
+message TemplateJobCancelledEvent {
+  string jobId = 1;
+  TemplateJobType type = 2;
+  string sourceName = 3;
+  string destinationName = 4;
+}
