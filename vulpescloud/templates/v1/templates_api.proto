@@ -3,6 +3,7 @@ syntax = "proto3";
 package vulpescloud.templates.v1;
 
 import "vulpescloud/templates/v1/templates_types.proto";
+import "google/protobuf/empty.proto";
 
 option java_multiple_files = true;
 option java_package = "de.vulpescloud.proto.templates.v1";
