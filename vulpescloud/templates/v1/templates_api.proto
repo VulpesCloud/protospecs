@@ -170,4 +170,8 @@ service TemplateService {
   rpc DeleteFile(DeleteFileRequest) returns (DeleteFileResponse);
   rpc ReadFile(ReadFileRequest) returns (ReadFileResponse);
   rpc ListDirectory(ListDirectoryRequest) returns (ListDirectoryResponse);
+
+  rpc ListTemplateJobs(ListTemplateJobsRequest) returns (ListTemplateJobsResponse);
+  rpc StreamReadFileChunks(StreamReadFileChunksRequest) returns (stream TemplateFileChunk);
+  rpc StreamWriteFileChunks(stream StreamWriteFileChunksRequest) returns (TemplateOperationResult);
 }

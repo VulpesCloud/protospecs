@@ -97,6 +97,26 @@ enum TemplateJobAcceptStatus {
   TEMPLATE_JOB_ACCEPT_STATUS_REJECTED_INVALID_CONFIGURATION = 5;
 }
 
+enum TemplateJobPhase {
+  TEMPLATE_JOB_PHASE_UNSPECIFIED = 0;
+  TEMPLATE_JOB_PHASE_ACCEPTED = 1;
+  TEMPLATE_JOB_PHASE_SCANNING_SOURCE = 2;
+  TEMPLATE_JOB_PHASE_SCANNING_DESTINATION = 3;
+  TEMPLATE_JOB_PHASE_PREPARING_DESTINATION = 4;
+  TEMPLATE_JOB_PHASE_COPYING_FILES = 5;
+  TEMPLATE_JOB_PHASE_PURGING_DESTINATION = 6;
+  TEMPLATE_JOB_PHASE_VERIFYING_CHECKPOINT = 7;
+  TEMPLATE_JOB_PHASE_DELETING_SOURCE = 8;
+}
+
+message TemplateFileChunk {
+  int64 offset = 1;
+  int64 totalSize = 2;
+  int64 modifiedAt = 3;
+  bytes content = 4;
+  bool finalChunk = 5;
+}
+
 message TemplateJobProgress {
   string jobId = 1;
   TemplateJobType type = 2;
@@ -123,6 +143,8 @@ message TemplateJobProgress {
   int64 completedAt = 18;
 
   string failureReason = 19;
+
+  TemplateJobPhase phase = 20;
 }
 
 message TemplateJobAcceptResponse {
@@ -146,4 +168,30 @@ message CancelTemplateJobRequest {
 message CancelTemplateJobResponse {
   bool success = 1;
   string message = 2;
+}
+
+message ListTemplateJobsRequest {
+  // UNSPECIFIED means all retained jobs.
+  TemplateJobStatus statusFilter = 1;
+}
+
+message ListTemplateJobsResponse {
+  repeated TemplateJobProgress jobs = 1;
+}
+
+message StreamReadFileChunksRequest {
+  TemplateReference template = 1;
+  string path = 2;
+  // The server should cap this at a small size, such as 1 MiB.
+  int32 chunkSize = 3;
+}
+
+message StreamWriteFileChunksRequest {
+  TemplateReference template = 1;
+  string path = 2;
+  int64 totalSize = 3;
+  int64 offset = 4;
+  int64 modifiedAt = 5;
+  bytes content = 6;
+  bool finalChunk = 7;
 }
